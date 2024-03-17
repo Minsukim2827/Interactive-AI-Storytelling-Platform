@@ -1,4 +1,9 @@
 # Interactive-AI-Storytelling-Platform
+
 COMP602 - Software Development Practice
 
-test1
+install nodejs
+install python
+install react
+install flask
+install flask_cors
