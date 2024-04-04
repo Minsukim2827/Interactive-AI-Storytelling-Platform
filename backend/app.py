@@ -1,8 +1,10 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import psycopg2
 import os
 from dotenv import load_dotenv
+from ai import generate_text
+
 
 app = Flask(__name__)
 CORS(app)
@@ -36,6 +38,14 @@ def get_users():
     cursor.close()
     conn.close()
     return jsonify(users_list)
+
+@app.route('/generate-text', methods=['POST'])
+def generate_text_route():
+    data = request.get_json()
+    prompt = data.get('prompt', '')
+    max_length = data.get('max_length', 50)
+    generated_text = generate_text(prompt, max_length)
+    return jsonify({'generated_text': generated_text})
 
 if __name__ == '__main__':
     app.run(port=5000)

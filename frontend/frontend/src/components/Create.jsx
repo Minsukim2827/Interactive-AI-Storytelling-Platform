@@ -2,18 +2,30 @@ import React, { useState } from 'react';
 
 function HomePage() {
   const [inputValue, setInputValue] = useState('');
+  const [generatedText, setGeneratedText] = useState('');
 
   const handleChange = (event) => {
     setInputValue(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Process the form submission here, such as sending the input value to the server
-    console.log("Submitted value:", inputValue);
-    setInputValue('');
-  };
-
+    try {
+      const response = await fetch('http://127.0.0.1:5000/generate-text', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: inputValue }),
+      });
+      const data = await response.json();
+      setGeneratedText(data.generated_text);
+      setInputValue('');
+    } catch (error) {
+      console.error('Error generating text:', error);
+      setInputValue('');
+    }
+ };
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault(); // Prevent form submission when pressing Enter in the input field
@@ -30,10 +42,11 @@ function HomePage() {
           value={inputValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder="Enter your information"
+          placeholder="Prompt"
         />
         <button type="submit">Submit</button>
       </form>
+      {generatedText && <p>Generated Text: {generatedText}</p>}
     </div>
   );
 }
