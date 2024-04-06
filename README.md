@@ -8,6 +8,14 @@ install python
 
 install react
 
+to import tailwind.css into your jsx, make sure to reference this line at the top of the page:
+
+```
+import './../css/tailwind.css';
+```
+
+## Backend libraries
+
 pip install flask
 
 pip install flask_cors
@@ -20,6 +28,8 @@ pip install tensorflow
 
 pip install transformers
 
+on windows: you may have to install
+pip install tf-keras
 
 ## workflow
 
@@ -32,7 +42,6 @@ git pull
 ```
 
 reinstall vite if necessary
-
 
 ```
 git checkout -b new-branch

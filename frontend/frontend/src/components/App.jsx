@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './../css/App.css';
 import Create from './Create'; // Adjust the path as necessary
 import UsersList from './UsersList'; // Import the UsersList component
+import './../css/tailwind.css';
+import TailwindTest from './tailwindtest';
 
 function App() {
   return (
@@ -16,8 +18,10 @@ function App() {
             <Link to="/users">Users</Link> {/* Add a link to the UsersList page */}
           </nav>
         </header>
+
+
         <Routes>
-          
+          <Route path="/" element={<TailwindTest />} />
           <Route path="/create" element={<Create />} />
           <Route path="/users" element={<UsersList />} /> {/* Route for displaying the users list */}
         </Routes>
