@@ -1,10 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import psycopg2
 import os
 from dotenv import load_dotenv
 from ai import generate_text
-
+from ai import generate_image
+import io
 
 app = Flask(__name__)
 CORS(app)
@@ -39,6 +40,7 @@ def get_users():
     conn.close()
     return jsonify(users_list)
 
+# Add a new route to generate ai text
 @app.route('/generate-text', methods=['POST'])
 def generate_text_route():
     data = request.get_json()
@@ -46,6 +48,15 @@ def generate_text_route():
     max_length = data.get('max_length', 50)
     generated_text = generate_text(prompt, max_length)
     return jsonify({'generated_text': generated_text})
+
+
+# Add a new route to generate an image
+@app.route('/generate-image', methods=['POST'])
+def generate_image_route():
+    data = request.get_json()
+    prompt = data.get('prompt', '')
+    image_bytes = generate_image({"inputs": prompt})
+    return send_file(io.BytesIO(image_bytes), mimetype='image/png')
 
 if __name__ == '__main__':
     app.run(port=5000)

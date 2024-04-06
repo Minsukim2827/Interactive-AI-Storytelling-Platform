@@ -1,16 +1,38 @@
 import React, { useState } from 'react';
 
-function HomePage() {
-  const [inputValue, setInputValue] = useState('');
+function Create() {
+  //variables for input and generated text setting initial variables to empty
+  const [inputValue, setInputValue] = useState(''); 
   const [generatedText, setGeneratedText] = useState('');
+  const [generatedImage, setGeneratedImage] = useState(null); 
+  
 
+  //function to handle change
   const handleChange = (event) => {
     setInputValue(event.target.value);
   };
 
+  //function to handle submit event of generating image and text
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      const response = await fetch('http://127.0.0.1:5000/generate-image', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: inputValue }),
+      });
+      const data = await response.blob(); // Get image blob
+      console.log(data);
+      setGeneratedImage(URL.createObjectURL(data)); // Set the generated image
+      setInputValue('');
+    } catch (error) {
+      console.error('Error generating image:', error);
+      setInputValue('');
+    }
+    try {
+      //send  post request to the backend ai to generate text
       const response = await fetch('http://127.0.0.1:5000/generate-text', {
         method: 'POST',
         headers: {
@@ -23,16 +45,19 @@ function HomePage() {
       setInputValue('');
     } catch (error) {
       console.error('Error generating text:', error);
-      setInputValue('');
-    }
- };
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault(); // Prevent form submission when pressing Enter in the input field
-      handleSubmit(event);
+      setInputValue(''); //clears input field
     }
   };
 
+  //function to handle key down event
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent form submission when pressing Enter in the input field
+      handleSubmit(event); //call handle submit function
+    }
+  };
+
+  //jsx rendering
   return (
     <div>
       <h2>Storybook create</h2>
@@ -40,15 +65,18 @@ function HomePage() {
         <input
           type="text"
           value={inputValue}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
+          onChange={handleChange} //call handlechange function
+          onKeyDown={handleKeyDown} //call handle key down function
           placeholder="Prompt"
         />
         <button type="submit">Submit</button>
       </form>
-      {generatedText && <p>Generated Text: {generatedText}</p>}
+      {generatedImage && <img src={generatedImage} alt="Generated Image" />} {/* Display the generated image */}
+      {generatedText && <p>Generated Text: {generatedText}</p>} {/* Display the generated text */}
+
     </div>
   );
 }
 
-export default HomePage;
+
+export default Create;

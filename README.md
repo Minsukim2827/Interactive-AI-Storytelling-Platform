@@ -16,6 +16,10 @@ pip install python-dotenv
 
 pip install psycopg2-binary
 
+pip install tensorflow
+
+pip install transformers
+
 
 ## workflow
 
