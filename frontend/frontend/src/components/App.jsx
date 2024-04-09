@@ -5,8 +5,11 @@ import Create from './Create'; // Adjust the path as necessary
 import UsersList from './UsersList'; // Import the UsersList component
 import './../css/tailwind.css';
 import TailwindTest from './tailwindtest';
+import DarkModeToggle from './DarkModeToggle'
 
 function App() {
+
+
   return (
     <Router>
       <div className="App">
@@ -16,6 +19,7 @@ function App() {
             <Link to="/">Home</Link>
             <Link to="/create">Create</Link>
             <Link to="/users">Users</Link> {/* Add a link to the UsersList page */}
+            <DarkModeToggle />
           </nav>
         </header>
 
