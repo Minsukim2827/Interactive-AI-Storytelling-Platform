@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 function Create() {
   //variables for input and generated text setting initial variables to empty
-  const [inputValue, setInputValue] = useState(''); 
+  const [inputValue, setInputValue] = useState('');
   const [generatedText, setGeneratedText] = useState('');
-  const [generatedImage, setGeneratedImage] = useState(null); 
-  
+  const [generatedImage, setGeneratedImage] = useState(null);
+
 
   //function to handle change
   const handleChange = (event) => {
@@ -16,7 +16,7 @@ function Create() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('http://127.0.0.1:5000/generate-image', { 
+      const response = await fetch('http://127.0.0.1:5000/generate-image', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,8 +71,12 @@ function Create() {
         />
         <button type="submit">Submit</button>
       </form>
-      {generatedImage && <img src={generatedImage} alt="Generated Image" />} {/* Display the generated image */}
-      {generatedText && <p>Generated Text: {generatedText}</p>} {/* Display the generated text */}
+      {generatedImage && (
+        <div className="flex justify-center">
+          <img src={generatedImage} alt="Generated Image" className="max-w-lg h-auto" />
+        </div>
+      )} {/* Display the generated image */}
+      {generatedText && <p className="text-lg font-normal text-gray-800"> {generatedText}</p> } {/* Display the generated text */}
 
     </div>
   );
