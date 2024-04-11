@@ -8,7 +8,7 @@ from ai import generate_image
 import io
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+CORS(app)
 
 # Load environment variables
 load_dotenv()
