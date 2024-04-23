@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Create() {
+function Create({ onUpdateForms }) {
   //variables for input and generated text setting initial variables to empty
   const [inputValue, setInputValue] = useState('');
   const [generatedText, setGeneratedText] = useState('');
@@ -25,12 +25,10 @@ function Create() {
       });
       const data = await response.blob(); // Get image blob
       console.log(data);
-      setGeneratedImage(URL.createObjectURL(data)); // Set the generated image
+      const imageUrl = URL.createObjectURL(data);
+      setGeneratedImage(imageUrl); // Set the generated image
       setInputValue('');
-    } catch (error) {
-      console.error('Error generating image:', error);
-      setInputValue('');
-    }
+    
     try {
       //send  post request to the backend ai to generate text
       const response = await fetch('http://127.0.0.1:5000/generate-text', {
@@ -43,10 +41,16 @@ function Create() {
       const data = await response.json();
       setGeneratedText(data.generated_text);
       setInputValue('');
+      onUpdateForms(imageUrl, data.generated_text, inputValue);
     } catch (error) {
       console.error('Error generating text:', error);
       setInputValue(''); //clears input field
     }
+  } catch (error) {
+    console.error('Error generating image:', error);
+    setInputValue('');
+  }
+
   };
 
   //function to handle key down event
