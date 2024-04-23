@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Create from './Create';
 
 function CreatePage() {
@@ -7,6 +7,7 @@ function CreatePage() {
  const [currentFormIndex, setCurrentFormIndex] = useState(0);
  const [pageNumber, setPageNumber] = useState('');
  const [searchError, setSearchError] = useState('');
+ const [lastGeneratedImage, setLastGeneratedImage] = useState(null); // stores last generated image for testings
 
  const addPage = () => { // Add a new page
     const newId = forms.length + 1;
@@ -35,6 +36,27 @@ function CreatePage() {
 
  const totalPages = forms.length; // Total number of pages
 
+ const handleUpdateForms = (imageUrl, generatedText, inputValue) => { // updates the forms in the createpage with the information from the create component
+  setForms(prevForms => {
+    const updatedForms = [...prevForms];
+    updatedForms[updatedForms.length - 1] = {
+      ...updatedForms[updatedForms.length - 1],
+      generatedImage: imageUrl,
+      generatedText: generatedText,
+      inputValue: inputValue
+    };
+    return updatedForms;
+  });
+};
+
+useEffect(() => {
+//testing for navbar so produces last generated image
+  if (forms.length > 0 && forms[forms.length - 1].generatedImage) {
+    setLastGeneratedImage(forms[forms.length - 1].generatedImage);
+  }
+}, [forms]);
+
+ console.log(forms);
  return (
     <div className="flex">
       <div className="w-1/5 mr-4">
@@ -64,6 +86,7 @@ function CreatePage() {
               inputValue={form.inputValue}
               generatedText={form.generatedText}
               generatedImage={form.generatedImage}
+              onUpdateForms={handleUpdateForms} // Pass the function to update forms
             /> {/* Display the create form */}
           </div>
         ))}
@@ -72,7 +95,12 @@ function CreatePage() {
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={addPage}> {/* Add a new page */}
           New Page
         </button>
-      </div>
+      </div> 
+      {lastGeneratedImage && ( 
+      <div className="w-1/4 md:w-1/6 ml-auto mb-4">
+        <img src={lastGeneratedImage} alt="Last Generated Image" />
+      </div> /* Display the last generated image */
+    )}
     </div>
  );
 }
