@@ -33,6 +33,7 @@ From the root directory, Navigate to your backend folder and install the necessa
 ```
 cd backend
 pip install Flask Flask-CORS psycopg2-binary python-dotenv transformers requests tensorflow
+pip install openai
 ```
 
 ### Step 3. Create a .env file for the backend
@@ -62,6 +63,20 @@ From the root directory, Navigate to your backend folder and run this command:
 cd backend
 flask run
 ```
+
+
+
+### Note:
+
+If Development server doesnt display the way it should, try a hard cache reset while on the local hosted page (chrome):
+
+```
+ctrl shift r
+```
+
+
+
+
 
 COMP602 - Software Development Practice
 

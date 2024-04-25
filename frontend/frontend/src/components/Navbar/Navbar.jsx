@@ -1,15 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpenText } from 'lucide-react';
-import '@/css/index.css'; // Import TailwindCSS
 import { ModeToggle } from './modeToggle';
 import { useAuth } from './../AuthProvider';
 import { useNavigate } from 'react-router-dom';
 
 const navItems = [
   { label: 'Home', href: '/' },
-  { label: 'create', href: '/create' },
-  { label: 'users', href: '/users' },
+  { label: 'Create', href: '/create' },
+  { label: 'Users', href: '/users' },
+  { label: 'Generate Story', href: '/generate' },
+  { label: 'Discover', href: '/discover' },
 ];
 
 const Navbar = () => {
@@ -36,16 +37,18 @@ const Navbar = () => {
             </Link>
           </li>
         ))}
+
       </ul>
       <div className="flex items-center gap-4">
         <ModeToggle />
         {user ? (
   <>
-    <span>{user.username}</span>
-    <button onClick={() => {
-      logout();
-      navigate('/');
-    }} className="px-3 py-2 rounded bg-red-500 hover:bg-red-700 text-white transition-colors">
+    <span className = "font-bold">{user.username}</span>
+            <Link to="/profile" className="px-3 py-2 rounded bg-green-500 hover:bg-green-700 text-white transition-colors">
+              Profile
+            </Link>
+        
+    <button onClick= {handleLogout} className="px-3 py-2 rounded bg-red-500 hover:bg-red-700 text-white transition-colors">
       Logout
     </button>
   </>

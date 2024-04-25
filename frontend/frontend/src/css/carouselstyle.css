@@ -1,0 +1,74 @@
+
+  
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-50%); /* Assuming the duplicate starts at 50% */
+      }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .carousel {
+    box-sizing: border-box;
+  }
+  
+  .carousel-images {
+    overflow: hidden;
+    padding: 60px 0;
+  
+    white-space: nowrap;
+    position: relative;
+  }
+  
+  .carousel-images:before,
+  .carousel-images:after {
+    position: absolute;
+    top: 0;
+    width: 300px;
+    height: 100%;
+ 
+    z-index: 2;
+  }
+  
+  .carousel-images:before {
+    left: 0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0), white);
+  }
+  
+  .carousel-images:after {
+    right: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
+  }
+  
+  .carousel-images:hover .carousel-images-slide {
+    animation-play-state: paused;
+  }
+  
+  .carousel-images-slide {
+    display: flex;
+    width:200%;
+    flex-wrap: nowrap;
+    transition: transform 0.5s ease;
+    animation: 70s slide linear infinite;
+  }
+  
+  .carousel-images-slide .carousel-img {
+    height: 300px;
+    margin: 0 40px;
+  }
+
+  .carousel-img {
+    transition: flex-grow 0.5s ease, transform 0.5s ease; /* Animate flex-grow and transform */
+    flex: 1; /* Equal flex basis for all images initially */
+    object-fit: cover; /* Ensures images cover their area without distortion */
+    cursor: pointer; /* Indicates the images are interactive */
+  }
+  
+  .carousel-img:hover {
+    flex-grow: 2; /* Increase the size of the image being hovered */
+    transform: scale(1.1); /* Slightly scale up the image */
+  }
