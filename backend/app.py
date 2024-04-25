@@ -24,7 +24,7 @@ def get_db_connection():
     print("Database connected")
     return conn
 
-# import get_users function from app.py (this is just to test the db table)
+# import get_users function from app.py (this is just to test the db)
 @app.route('/api/users')
 def users_route(): 
     return jsonify(get_users())
