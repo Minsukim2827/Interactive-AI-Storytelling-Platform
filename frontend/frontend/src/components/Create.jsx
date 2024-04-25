@@ -28,28 +28,28 @@ function Create({ onUpdateForms }) {
       const imageUrl = URL.createObjectURL(data);
       setGeneratedImage(imageUrl); // Set the generated image
       setInputValue('');
-    
-    try {
-      //send  post request to the backend ai to generate text
-      const response = await fetch('http://127.0.0.1:5000/generate-text', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: inputValue }),
-      });
-      const data = await response.json();
-      setGeneratedText(data.generated_text);
-      setInputValue('');
-      onUpdateForms(imageUrl, data.generated_text, inputValue);
+
+      try {
+        //send  post request to the backend ai to generate text
+        const response = await fetch('http://127.0.0.1:5000/generate-text', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ prompt: inputValue }),
+        });
+        const data = await response.json();
+        setGeneratedText(data.generated_text);
+        setInputValue('');
+        onUpdateForms(imageUrl, data.generated_text, inputValue);
+      } catch (error) {
+        console.error('Error generating text:', error);
+        setInputValue(''); //clears input field
+      }
     } catch (error) {
-      console.error('Error generating text:', error);
-      setInputValue(''); //clears input field
+      console.error('Error generating image:', error);
+      setInputValue('');
     }
-  } catch (error) {
-    console.error('Error generating image:', error);
-    setInputValue('');
-  }
 
   };
 
@@ -61,29 +61,38 @@ function Create({ onUpdateForms }) {
     }
   };
 
+
   //jsx rendering
   return (
-    <div>
-      <h2>Storybook create</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleChange} //call handlechange function
-          onKeyDown={handleKeyDown} //call handle key down function
-          placeholder="Prompt"
-        />
-        <button type="submit">Submit</button>
-      </form>
+    <div className="h-screen flex flex-col items-center">
+      <h2 className="mt-4 mb-4">Storybook create</h2>
+      <div className="w-full max-w-md">
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-col">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              placeholder="Prompt"
+              className="w-full px-4 py-2 mb-4 border border-gray-300 rounded"
+            />
+            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+          </div>
+        </form>
+      </div>
       {generatedImage && (
-        <div className="flex justify-center">
-          <img src={generatedImage} alt="Generated Image" className="max-w-lg h-auto" />
+        <div className="w-full max-w-lg mb-4 mt-4">
+          <img src={generatedImage} alt="Generated Image" className="w-full" />
         </div>
-      )} {/* Display the generated image */}
-      {generatedText && <p className="text-lg font-normal text-gray-800"> {generatedText}</p> } {/* Display the generated text */}
-
+      )}
+      {generatedText && (
+        <p className="text-lg font-normal text-gray-800 mb-4">{generatedText}</p>
+      )}
     </div>
   );
+  
+
 }
 
 
