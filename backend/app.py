@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from users import get_users
 from login import register, login 
 from generateStory import generate_story
-
+from discover import generate_story_book_list
 app = Flask(__name__)
 CORS(app)
 
@@ -61,6 +61,15 @@ def register_route():
 @app.route('/api/login', methods=['POST'])
 def login_route():
     return login()
+
+@app.route('/api/storybooklist', methods=['GET'])
+def generate_discovery_page():
+    print("received connection request")
+    storybooklist = generate_story_book_list()
+    
+    print(storybooklist)
+    print("attempting to send to frontend")
+    return jsonify(storybooklist)
 
 if __name__ == '__main__':
     app.run(port=5000)
