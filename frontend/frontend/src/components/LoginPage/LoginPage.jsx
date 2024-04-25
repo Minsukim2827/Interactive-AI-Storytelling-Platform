@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import axios from './../axios';
 import { Link } from 'react-router-dom'; // Import Link for routing
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './../AuthProvider';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const { login } = useAuth(); 
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -17,6 +19,7 @@ function LoginPage() {
         username: username,
         password: password
       });
+      login(response.data.user);
       alert('Login successful! Welcome ' + response.data.user.username);
       navigate('/'); //redirect to homepage
     } catch (error) {
