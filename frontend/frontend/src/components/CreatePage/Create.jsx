@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './../../css/index.css'
 
 function Create({ onUpdateForms }) {
   //variables for input and generated text setting initial variables to empty

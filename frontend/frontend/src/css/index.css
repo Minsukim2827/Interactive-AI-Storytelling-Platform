@@ -1,6 +1,6 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+@tailwind components;
+@tailwind utilities;
 
   @layer base {
     :root {
@@ -88,7 +88,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
+html.dark {
+  background-color: #242424;
+  color: rgba(255, 255, 255, 0.87);
+}
 
 a {
   font-weight: 500;
