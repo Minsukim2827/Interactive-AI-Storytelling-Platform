@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './../css/App.css';
 import CreatePage from './CreatePage/CreatePage'; // Adjust the path as necessary
-import UsersList from './UsersList'; // Import the UsersList component
+import UsersList from './UserPage/UsersList'; // Import the UsersList component
 import './../css/index.css'
 import Navbar from './Navbar/Navbar'; 
 import { ThemeProvider } from "@/components/Navbar/theme-provider"
@@ -24,7 +24,7 @@ function App() {
             </>
           } />
           <Route path="/create" element={<CreatePage />} />
-          <Route path="/users" element={<UsersList />} /> {/* Route for displaying the users list */}
+          <Route path="/users" element={<UsersList />} /> 
         </Routes>
       </div>
     </Router>
