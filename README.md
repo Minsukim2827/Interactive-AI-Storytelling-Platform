@@ -2,6 +2,8 @@
 
 COMP602 - Software Development Practice
 
+**make sure to navigate to the frontend directory and run "npm install" to install necessary packages**
+
 install nodejs
 
 install python
