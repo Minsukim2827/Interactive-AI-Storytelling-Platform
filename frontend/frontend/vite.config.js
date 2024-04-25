@@ -4,7 +4,7 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/frontend/',
+  base: '/Interactive-AI-Storytelling-Platform',
   plugins: [react()],
   resolve: {
     alias: {
