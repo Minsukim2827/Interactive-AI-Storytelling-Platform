@@ -12,7 +12,7 @@ const navItems = [
 
 const Navbar = () => {
   return (
-    <nav className="bg-gray-800 text-white p-4 flex justify-between items-center sticky top-0 z-50 backdrop-blur-lg">
+    <nav className="max-w-full bg-gray-800 text-white p-4 flex justify-between items-center sticky top-0 z-50 backdrop-blur-lg">
       <div className="flex items-center">
         <Link to="/" className="flex items-center mr-2">
           <BookOpenText className="mr-2" />

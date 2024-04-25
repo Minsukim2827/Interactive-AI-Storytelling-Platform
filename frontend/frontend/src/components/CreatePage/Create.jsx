@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import './../../css/index.css'
+import axios from './../axios';
 
 function Create({ onUpdateForms }) {
   //variables for input and generated text setting initial variables to empty
@@ -15,39 +17,27 @@ function Create({ onUpdateForms }) {
   //function to handle submit event of generating image and text
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setInputValue('');
+
     try {
-      const response = await fetch('http://127.0.0.1:5000/generate-image', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: inputValue }),
-      });
-      const data = await response.blob(); // Get image blob
-      console.log(data);
-      const imageUrl = URL.createObjectURL(data);
-      setGeneratedImage(imageUrl); // Set the generated image
-      setInputValue('');
+      const imageResponse = await axios.post('generate-image', { prompt: inputValue });
+      const data = await imageResponse.data;
+      console.log("data retrieved from backend", data);
+      const imageUrl = URL.createObjectURL(new Blob([data]));
+      setGeneratedImage(imageUrl);
 
       try {
         //send  post request to the backend ai to generate text
-        const response = await fetch('http://127.0.0.1:5000/generate-text', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ prompt: inputValue }),
-        });
-        const data = await response.json();
-        setGeneratedText(data.generated_text);
-        setInputValue('');
-        onUpdateForms(imageUrl, data.generated_text, inputValue);
-      } catch (error) {
-        console.error('Error generating text:', error);
+        const textResponse = await axios.post('generate-text', { prompt: inputValue });
+        const textData = await textResponse.data;
+        setGeneratedText(textData.generated_text);
+        onUpdateForms(imageUrl, textData.generated_text, inputValue);
+      } catch (textError) {
+        console.error('Error generating text:', textError);
         setInputValue(''); //clears input field
       }
-    } catch (error) {
-      console.error('Error generating image:', error);
+    } catch (imageError) {
+      console.error('Error generating image:', imageError);
       setInputValue('');
     }
 
