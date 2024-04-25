@@ -7,10 +7,11 @@ import { ThemeProvider } from "@/components/Navbar/theme-provider"
 import HomePage from './HomePage/HomePage';
 import LoginPage from './LoginPage/LoginPage';
 import SignUpPage from './SignUpPage/SignUpPage';
+import { AuthProvider } from './AuthProvider';
 
 function App() {
   return (
-
+<AuthProvider>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Router>
           <Navbar />
@@ -23,7 +24,7 @@ function App() {
           </Routes>
         </Router>
       </ThemeProvider>
-
+      </AuthProvider>
   );
 }
 

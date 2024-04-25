@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { BookOpenText } from 'lucide-react';
 import '@/css/index.css'; // Import TailwindCSS
 import { ModeToggle } from './modeToggle';
+import { useAuth } from './../AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -11,6 +13,13 @@ const navItems = [
 ];
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
     <nav className="max-w-full bg-gray-800 text-white p-4 flex justify-between items-center sticky top-0 z-50 backdrop-blur-lg">
       <div className="flex items-center">
@@ -19,7 +28,6 @@ const Navbar = () => {
           AI Storytelling
         </Link>
       </div>
-      <div>
       <ul className="flex space-x-4 items-center">
         {navItems.map((item, index) => (
           <li key={index}>
@@ -28,12 +36,25 @@ const Navbar = () => {
             </Link>
           </li>
         ))}
-        </ul>
-        </div>
-        <div className="flex items-center gap-4">
+      </ul>
+      <div className="flex items-center gap-4">
         <ModeToggle />
-        <Link to="/login" className="px-3 py-2 rounded bg-blue-500 hover:bg-blue-700 text-white transition-colors">Login</Link>
-        </div>
+        {user ? (
+  <>
+    <span>{user.username}</span>
+    <button onClick={() => {
+      logout();
+      navigate('/');
+    }} className="px-3 py-2 rounded bg-red-500 hover:bg-red-700 text-white transition-colors">
+      Logout
+    </button>
+  </>
+) : (
+  <Link to="/login" className="px-3 py-2 rounded bg-blue-500 hover:bg-blue-700 text-white transition-colors">
+    Login
+  </Link>
+)}
+      </div>
     </nav>
   );
 };
