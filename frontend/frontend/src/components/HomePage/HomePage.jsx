@@ -1,4 +1,5 @@
 import React from 'react';
+import Carousel from './Carousel';
 
 const HomePage = () => {
   return (
@@ -14,7 +15,11 @@ const HomePage = () => {
       <p className="mt-10 text-lg text-center text-neutral-500 max-w-4xl">
       Welcome to your go-to destination for storybook collections and discovery! Explore this website of resources and community recommendations to find your next captivating read. Whether you're into epic fantasies, crime thrillers, or interstellar adventures, we've got you covered.
       </p>
+      <div>
+        <Carousel />
+      </div>
     </div>
+
   )};
 
   export default HomePage;

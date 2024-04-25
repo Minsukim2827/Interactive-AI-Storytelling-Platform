@@ -9,6 +9,9 @@ import LoginPage from './LoginPage/LoginPage';
 import SignUpPage from './SignUpPage/SignUpPage';
 import { AuthProvider } from './AuthProvider';
 import FadeInWrapper from './FadeInWrapper';
+import GenerateStoryPage from './GenerateStoryPage/GenerateStoryPage';
+import DiscoverPage from './DiscoverPage/DiscoverPage';
+import ProfilePage from './ProfilePage/ProfilePage';
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
             <Route path="/users" element={<UsersList />} /> 
             <Route path="/login" element={<LoginPage />} /> 
             <Route path="/signup" element={<SignUpPage />} /> 
+            <Route path="/generate" element={<GenerateStoryPage />} />
+            <Route path="/discover" element={<DiscoverPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
           </FadeInWrapper>
         </Router>

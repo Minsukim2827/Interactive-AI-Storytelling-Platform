@@ -19,27 +19,14 @@ function Create({ onUpdateForms }) {
     setInputValue('');
 
     try {
-      const imageResponse = await axios.post('generate-image', { prompt: inputValue });
-      const data = await imageResponse.data;
-      console.log("data retrieved from backend", data);
-      const imageUrl = URL.createObjectURL(new Blob([data]));
-      setGeneratedImage(imageUrl);
-
-      try {
-        //send  post request to the backend ai to generate text
-        const textResponse = await axios.post('generate-text', { prompt: inputValue });
-        const textData = await textResponse.data;
-        setGeneratedText(textData.generated_text);
-        onUpdateForms(imageUrl, textData.generated_text, inputValue);
-      } catch (textError) {
-        console.error('Error generating text:', textError);
-        setInputValue(''); //clears input field
-      }
-    } catch (imageError) {
-      console.error('Error generating image:', imageError);
-      setInputValue('');
+      const response = await axios.post('/generate-ai', { prompt: inputValue });
+      console.log(response.data);
+      setGeneratedImage(response.data.image);
+      setGeneratedText(response.data.text);
+      onUpdateForms(response.data.image, response.data.text, inputValue);
+    } catch (error) {
+      console.error('Error generating image or text:', error);
     }
-
   };
 
   //function to handle key down event
@@ -64,7 +51,7 @@ function Create({ onUpdateForms }) {
               onChange={handleChange}
               onKeyDown={handleKeyDown}
               placeholder="Prompt"
-              className="w-full px-4 py-2 mb-4 border border-gray-300 rounded"
+              className="w-full px-4 py-2 mb-4 border border-gray-300 rounded text-black"
             />
             <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
           </div>

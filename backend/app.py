@@ -1,14 +1,12 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, g
 from flask_cors import CORS
 import psycopg2
 import os
 from dotenv import load_dotenv
-from ai import generate_text
-from ai import generate_image
 from users import get_users
-import io
 from login import register, login 
-
+from generateStory import generate_story
+from discover import generate_story_book_list
 app = Flask(__name__)
 CORS(app)
 
@@ -23,9 +21,18 @@ def get_conn_string():
     return f"host={os.getenv('DB_HOST')} user={os.getenv('DB_USER')} dbname={os.getenv('DB_NAME')} password={os.getenv('DB_PASSWORD')} sslmode={os.getenv('DB_SSLMODE', 'prefer')}"
 
 def get_db_connection():
-    conn = psycopg2.connect(get_conn_string())
-    print("Database connected")
-    return conn
+    if 'db' not in g:
+        g.db = psycopg2.connect(get_conn_string())
+        print("Database connected")
+    return g.db
+
+@app.teardown_request
+def teardown_request(exception):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
+        print("Database connection closed")
+
 
 #########################################################
 ################ API Calls Start Here ###################
@@ -38,23 +45,12 @@ def get_db_connection():
 def users_route(): 
     return jsonify(get_users())
 
-# Add a new route to generate ai text
-@app.route('/generate-text', methods=['POST'])
-def generate_text_route():
+@app.route('/generate-story', methods=['POST'])
+def generate_ai():
     data = request.get_json()
     prompt = data.get('prompt', '')
-    max_length = data.get('max_length', 50)
-    generated_text = generate_text(prompt, max_length)
-    return jsonify({'generated_text': generated_text})
-
-
-# Add a new route to generate an image
-@app.route('/generate-image', methods=['POST'])
-def generate_image_route():
-    data = request.get_json()
-    prompt = data.get('prompt', '')
-    image_bytes = generate_image({"inputs": prompt})
-    return send_file(io.BytesIO(image_bytes), mimetype='image/png')
+    story = generate_story(prompt)
+    return jsonify(story)
 
 # Add a new route to register a user
 @app.route('/api/register', methods=['POST'])
@@ -65,6 +61,15 @@ def register_route():
 @app.route('/api/login', methods=['POST'])
 def login_route():
     return login()
+
+@app.route('/api/storybooklist', methods=['GET'])
+def generate_discovery_page():
+    print("received connection request")
+    storybooklist = generate_story_book_list()
+    
+    print(storybooklist)
+    print("attempting to send to frontend")
+    return jsonify(storybooklist)
 
 if __name__ == '__main__':
     app.run(port=5000)
