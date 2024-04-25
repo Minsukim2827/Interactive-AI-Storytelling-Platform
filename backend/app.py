@@ -7,6 +7,7 @@ from ai import generate_text
 from ai import generate_image
 from users import get_users
 import io
+from login import register, login 
 
 app = Flask(__name__)
 CORS(app)
@@ -54,6 +55,16 @@ def generate_image_route():
     prompt = data.get('prompt', '')
     image_bytes = generate_image({"inputs": prompt})
     return send_file(io.BytesIO(image_bytes), mimetype='image/png')
+
+# Add a new route to register a user
+@app.route('/api/register', methods=['POST'])
+def register_route():
+    return register()
+
+# Add a new route to login a user
+@app.route('/api/login', methods=['POST'])
+def login_route():
+    return login()
 
 if __name__ == '__main__':
     app.run(port=5000)
