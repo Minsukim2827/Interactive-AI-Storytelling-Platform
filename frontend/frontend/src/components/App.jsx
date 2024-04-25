@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './../css/App.css';
-import Create from './Create'; // Adjust the path as necessary
-import UsersList from './UsersList'; // Import the UsersList component
+import Create from './Create'; 
+import UsersList from './UsersList'; 
 import './../css/tailwind.css';
 import TailwindTest from './tailwindtest';
 
