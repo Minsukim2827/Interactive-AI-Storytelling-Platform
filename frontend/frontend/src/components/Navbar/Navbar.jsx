@@ -1,13 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BookOpenText } from 'lucide-react';
 import { ModeToggle } from './modeToggle';
 import { useAuth } from './../AuthProvider';
-import { useNavigate } from 'react-router-dom';
 
 const navItems = [
   { label: 'Home', href: '/' },
-  { label: 'Create', href: '/create' },
   { label: 'Users', href: '/users' },
   { label: 'Generate Story', href: '/generate' },
   { label: 'Discover', href: '/discover' },
@@ -16,9 +14,10 @@ const navItems = [
 const Navbar = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate('/logout'); 
   };
 
   return (
@@ -37,26 +36,24 @@ const Navbar = () => {
             </Link>
           </li>
         ))}
-
       </ul>
       <div className="flex items-center gap-4">
         <ModeToggle />
         {user ? (
-  <>
-    <span className = "font-bold">{user.username}</span>
+          <>
+            <span className="font-bold">{user.username}</span>
             <Link to="/profile" className="px-3 py-2 rounded bg-green-500 hover:bg-green-700 text-white transition-colors">
               Profile
             </Link>
-        
-    <button onClick= {handleLogout} className="px-3 py-2 rounded bg-red-500 hover:bg-red-700 text-white transition-colors">
-      Logout
-    </button>
-  </>
-) : (
-  <Link to="/login" className="px-3 py-2 rounded bg-blue-500 hover:bg-blue-700 text-white transition-colors">
-    Login
-  </Link>
-)}
+            <button onClick={handleLogout} className="px-3 py-2 rounded bg-red-500 hover:bg-red-700 text-white transition-colors">
+              Logout
+            </button>
+          </>
+        ) : (
+          <Link to="/login" className="px-3 py-2 rounded bg-blue-500 hover:bg-blue-700 text-white transition-colors">
+            Login
+          </Link>
+        )}
       </div>
     </nav>
   );

@@ -12,6 +12,7 @@ import FadeInWrapper from './FadeInWrapper';
 import GenerateStoryPage from './GenerateStoryPage/GenerateStoryPage';
 import DiscoverPage from './DiscoverPage/DiscoverPage';
 import ProfilePage from './ProfilePage/ProfilePage';
+import LogoutPage from './Navbar/LogoutPage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/generate" element={<GenerateStoryPage />} />
             <Route path="/discover" element={<DiscoverPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/logout" element={<LogoutPage />} />
           </Routes>
           </FadeInWrapper>
         </Router>
