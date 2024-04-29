@@ -28,7 +28,7 @@ const DiscoverPage = () => {
                         <div className="mb-8">
                             <div className="font-bold text-xl mb-2">{storybook.storybook_title}</div>
                             <img src={storybook.coverimage} alt={storybook.storybook_title} className="w-80" />
-                            <p className="text-sm text-gray-600 flex items-center mt-4">
+                            <p className="text-sm text-black-700 flex items-center mt-4">
                                 By: {storybook.username}
                             </p>
                         </div>
