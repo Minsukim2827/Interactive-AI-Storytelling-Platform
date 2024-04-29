@@ -20,9 +20,11 @@ const GenerateStoryPage = () => {
             </p>
             {user ? (
                 <div className="mt-4">
-                    <button onClick={() => window.location.href = '/create'} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Create Now
-                    </button>
+                    <Link to="/create">
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Create Now
+                        </button>
+                    </Link>
                 </div>
             ) : (
                 <div>

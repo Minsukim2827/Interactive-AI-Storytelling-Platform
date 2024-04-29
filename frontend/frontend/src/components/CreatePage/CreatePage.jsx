@@ -7,7 +7,6 @@ function CreatePage() {
   // State variables
   const [forms, setForms] = useState([{ id: 1, inputValue: '', generatedText: '', generatedImage: null }]);
   const [currentFormIndex, setCurrentFormIndex] = useState(0);
-  const { user } = useAuth(); // Access user context
 
   const addPage = () => { // Add a new page
     if (forms.length < 6) { // Limit to 5 pages
