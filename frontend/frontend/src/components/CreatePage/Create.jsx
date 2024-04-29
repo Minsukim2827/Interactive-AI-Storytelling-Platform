@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import axios from './../axios';
-import { useAuth } from './../AuthProvider'; // Import useAuth to access user context
 
 function Create({ onUpdateForms }) {
   //variables for input and generated text setting initial variables to empty
   const [inputValue, setInputValue] = useState('');
   const [generatedText, setGeneratedText] = useState('');
   const [generatedImage, setGeneratedImage] = useState(null);
-  const { user } = useAuth(); // Access user context
 
 
   //function to handle change
