@@ -6,8 +6,6 @@ from openai import OpenAI
 
 load_dotenv()
 
-API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
-API_KEY = os.getenv("API_KEY")
 client = OpenAI(api_key= os.getenv("OPENAI_KEY"))
 
 def generate_openai_text(prompt):
