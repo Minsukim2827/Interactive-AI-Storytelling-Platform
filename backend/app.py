@@ -7,6 +7,8 @@ from users import get_users
 from login import register, login 
 from generateStory import generate_story
 from discover import generate_story_book_list
+from profilePage import get_user_storybooks
+
 app = Flask(__name__)
 CORS(app)
 
@@ -70,6 +72,19 @@ def generate_discovery_page():
     print(storybooklist)
     print("attempting to send to frontend")
     return jsonify(storybooklist)
+
+# fetch storybooks for the specific user for their profile page
+@app.route('/api/user/storybooks', methods=['GET'])
+def user_storybooks():
+    user_id = request.args.get('userId')
+    if user_id is None:
+        return jsonify({"error": "Missing user ID"}), 400
+    try:
+        storybooks = get_user_storybooks(user_id)
+        return jsonify(storybooks)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return jsonify({"error": "An error occurred fetching user storybooks"}), 500
 
 if __name__ == '__main__':
     app.run(port=5000)

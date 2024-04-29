@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from './../axios';
-import { Link } from 'react-router-dom'; // Import Link for routing
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; 
 import { useAuth } from './../AuthProvider';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoginSuccessful, setIsLoginSuccessful] = useState(false);
   const { login } = useAuth(); 
   const navigate = useNavigate();
 
@@ -20,10 +20,13 @@ function LoginPage() {
         password: password
       });
       login(response.data.user);
-      alert('Login successful! Welcome ' + response.data.user.username);
-      navigate('/'); //redirect to homepage
+      setIsLoginSuccessful(true);
+      setTimeout(() => {
+        navigate('/'); 
+      }, 1500); 
     } catch (error) {
-      setErrorMessage('Failed to login: ' + error.response.data.error);
+      setIsLoginSuccessful(false);
+      setErrorMessage('Failed to login: ' + (error.response?.data?.error || 'Unknown error'));
     }
   };
 
@@ -33,6 +36,12 @@ function LoginPage() {
         {errorMessage && (
           <div className="mb-4 text-sm text-red-500">
             {errorMessage}
+          </div>
+        )}
+        {isLoginSuccessful && (
+          <div className="mb-4 text-sm text-green-500">
+            Login Successful! Redirecting in 1.5 seconds...<br/>
+            If no redirection, <Link to="/" className="text-blue-500 hover:text-blue-700">click here</Link>.
           </div>
         )}
         <div className="mb-4">
