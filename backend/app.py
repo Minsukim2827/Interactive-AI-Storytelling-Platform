@@ -8,6 +8,7 @@ from login import register, login
 from discover import generate_story_book_list
 from profilePage import get_user_storybooks
 from ai import generate_story
+from saveStory import save_story 
 
 app = Flask(__name__)
 CORS(app)
@@ -85,6 +86,22 @@ def user_storybooks():
     except Exception as e:
         print(f"An error occurred: {e}")
         return jsonify({"error": "An error occurred fetching user storybooks"}), 500
+    
+#save ai generated story to database
+@app.route('/api/user/save-story', methods=['POST'])
+def save_story_route():
+    story_data = request.get_json()
+    if not story_data:
+        return jsonify({"error": "No data provided"}), 400
+    print("succesfully retrieved story")
+    result = save_story(story_data)
+    if "error" in result:
+        return jsonify(result), 500
+    
+    return jsonify(result), 200
+
+if __name__ == '__main__':
+    app.run(port=5000)
 
 if __name__ == '__main__':
     app.run(port=5000)
