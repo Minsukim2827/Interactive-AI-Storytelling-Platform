@@ -1,4 +1,4 @@
-// PageDisplay.jsx
+
 import React from 'react';
 
 const PageDisplay = ({ pages, navigateToForm }) => (
@@ -17,4 +17,3 @@ const PageDisplay = ({ pages, navigateToForm }) => (
 );
 
 export default PageDisplay;
-

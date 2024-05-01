@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import axios from './../axios'; // Ensure this path is correct based on your project structure
 
 // Define the initial state for the story generator
@@ -20,8 +20,18 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case 'SET_PAGE_CONTENT':
+      const updatedStoryPages = {
+        ...state.storyPages,
+        [action.pageKey]: { text: action.text, image: action.image }
+      };
       return {
         ...state,
+        storyPages: updatedStoryPages
+      };
+    case 'SET_CURRENT_PAGE_FROM_PROP':
+      return {
+        ...state,
+        currentPage: action.currentPage,
         storyPages: {
           ...state.storyPages,
           [action.pageKey]: { text: action.text, image: action.image }
@@ -47,8 +57,22 @@ function reducer(state, action) {
   }
 }
 
-function StoryGenerator({ onUpdate }) {
+
+function StoryGenerator({ onUpdate, currentPage, onNextPage }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    if (currentPage) {
+      dispatch({
+        type: 'SET_CURRENT_PAGE_FROM_PROP',
+        currentPage: Object.keys(initialState.storyPages).indexOf(currentPage.key),
+        pageKey: currentPage.key,
+        text: currentPage.text,
+        image: currentPage.image
+      });
+    }
+  }, [currentPage]);
+  
 
   const handleGeneratePage = async () => {
     dispatch({ type: 'SET_LOADING', loading: true });
@@ -73,18 +97,22 @@ function StoryGenerator({ onUpdate }) {
   const handleNextPage = () => {
     if (state.currentPage < Object.keys(state.storyPages).length - 1) {
       dispatch({ type: 'NEXT_PAGE' });
+      onNextPage();  
     }
   };
 
+  const currentPageKey = Object.keys(state.storyPages)[state.currentPage];
+  const currentPageData = state.storyPages[currentPageKey];
+
   return (
     <div className="flex flex-col items-center space-y-4">
-      <h1 className="text-xl font-bold">{Object.keys(state.storyPages)[state.currentPage]}</h1>
-      <div className="flex flex-col items-center border-2 border-blue-500 max-w-xs w-full p-4">
-        <p className='mb-4'>{state.storyPages[Object.keys(state.storyPages)[state.currentPage]].text}</p>
-        {state.storyPages[Object.keys(state.storyPages)[state.currentPage]].image && (
-          <img src={state.storyPages[Object.keys(state.storyPages)[state.currentPage]].image} alt="Story Image" className="max-w-full h-auto" />
-        )}
-      </div>
+    <h1 className="text-xl font-bold">{currentPageKey}</h1>
+    <div className="flex flex-col items-center border-2 border-blue-500 max-w-xs w-full p-4">
+      <p className='mb-4'>{currentPageData.text}</p>
+      {currentPageData.image && (
+        <img src={currentPageData.image} alt="Story Image" className="max-w-full h-auto" />
+      )}
+    </div>
       <input
         type="text"
         placeholder="Enter your input for the next page"
@@ -99,7 +127,7 @@ function StoryGenerator({ onUpdate }) {
       >
         Generate Page
       </button>
-      {state.currentPage < Object.keys(state.storyPages).length - 1 && (
+      {state.currentPage < Object.keys(state.storyPages).length - 1 && currentPageData.text && currentPageData.image && (
         <button
           onClick={handleNextPage}
           disabled={state.loading}
@@ -114,3 +142,4 @@ function StoryGenerator({ onUpdate }) {
 }
 
 export default StoryGenerator;
+
