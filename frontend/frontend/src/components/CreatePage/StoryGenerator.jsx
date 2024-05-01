@@ -1,108 +1,145 @@
-import React, { useState, useEffect } from 'react';
-import axios from './../axios';
-import { Image } from 'lucide-react';
+import React, { useReducer, useEffect } from 'react';
+import axios from './../axios'; // Ensure this path is correct based on your project structure
 
-function StoryGenerator({ onUpdate, initialContent }) {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [storyPages, setStoryPages] = useState({
-    'cover page': initialContent || { text: '', image: '' },
+// Define the initial state for the story generator
+const initialState = {
+  currentPage: 0,
+  storyPages: {
+    'cover page': { text: '', image: '' },
     'introduction page': { text: '', image: '' },
     'second page': { text: '', image: '' },
     'third page': { text: '', image: '' },
     'fourth page': { text: '', image: '' },
     'last page': { text: '', image: '' }
-  });
-  const [userInput, setUserInput] = useState('');
-  const [loading, setLoading] = useState(false);
+  },
+  userInput: '',
+  loading: false
+};
 
-  const prompts = {
-    'cover page': 'page 1/6: front cover: cover page of the story',
-    'introduction page': 'page 2/6: Introduction of Main Character and Setting',
-    'second page': 'page 3/6: Inciting Incident',
-    'third page': 'page 4/6: Rising Action/Challenge',
-    'fourth page': 'page 5/6: Climax',
-    'last page': 'page 6/6: Resolution and Ending'
-  };
+// Reducer function to handle state transitions
+function reducer(state, action) {
+  switch (action.type) {
+    case 'SET_PAGE_CONTENT':
+      const updatedStoryPages = {
+        ...state.storyPages,
+        [action.pageKey]: { text: action.text, image: action.image }
+      };
+      return {
+        ...state,
+        storyPages: updatedStoryPages
+      };
+    case 'SET_CURRENT_PAGE_FROM_PROP':
+      return {
+        ...state,
+        currentPage: action.currentPage,
+        storyPages: {
+          ...state.storyPages,
+          [action.pageKey]: { text: action.text, image: action.image }
+        }
+      };
+    case 'NEXT_PAGE':
+      return {
+        ...state,
+        currentPage: state.currentPage + 1
+      };
+    case 'SET_USER_INPUT':
+      return {
+        ...state,
+        userInput: action.input
+      };
+    case 'SET_LOADING':
+      return {
+        ...state,
+        loading: action.loading
+      };
+    default:
+      return state;
+  }
+}
+
+
+function StoryGenerator({ onUpdate, currentPage, onNextPage }) {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    if (initialContent) {
-      setStoryPages(prev => ({
-        ...prev,
-        [Object.keys(prompts)[currentPage]]: initialContent
-      }));
+    if (currentPage) {
+      dispatch({
+        type: 'SET_CURRENT_PAGE_FROM_PROP',
+        currentPage: Object.keys(initialState.storyPages).indexOf(currentPage.key),
+        pageKey: currentPage.key,
+        text: currentPage.text,
+        image: currentPage.image
+      });
     }
-  }, [initialContent, currentPage]);
+  }, [currentPage]);
+  
 
   const handleGeneratePage = async () => {
-    setLoading(true);
-    await generatePageContent(currentPage, userInput);
-    setLoading(false);
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < Object.keys(prompts).length - 1) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const generatePageContent = async (pageIndex, userInput) => {
-    const pageKeys = Object.keys(prompts);
-    const previousText = pageIndex > 0 ? storyPages[pageKeys[pageIndex - 1]].text : '';
-    const prompt = `${prompts[pageKeys[pageIndex]]} The previous page's text was: ${previousText} Current prompt: ${userInput}`;
+    dispatch({ type: 'SET_LOADING', loading: true });
+    const pageKeys = Object.keys(state.storyPages);
+    const currentPageKey = pageKeys[state.currentPage];
+    const prompt = `Generate content for: ${currentPageKey} with input: ${state.userInput}`;
     try {
       const response = await axios.post('/generate-story', { prompt });
-      setStoryPages(prev => ({
-        ...prev,
-        [pageKeys[pageIndex]]: { text: response.data.text, image: response.data.image }
-      }));
-      onUpdate(pageKeys[pageIndex], response.data.text, response.data.image);
+      dispatch({
+        type: 'SET_PAGE_CONTENT',
+        pageKey: currentPageKey,
+        text: response.data.text,
+        image: response.data.image
+      });
+      onUpdate(currentPageKey, response.data.text, response.data.image);
     } catch (error) {
       console.error('Error generating story page:', error);
     }
+    dispatch({ type: 'SET_LOADING', loading: false });
   };
 
-  const isContentReady = () => {
-    const page = storyPages[Object.keys(prompts)[currentPage]];
-    return page.image && (currentPage === 0 || page.text);
+  const handleNextPage = () => {
+    if (state.currentPage < Object.keys(state.storyPages).length - 1) {
+      dispatch({ type: 'NEXT_PAGE' });
+      onNextPage();  
+    }
   };
+
+  const currentPageKey = Object.keys(state.storyPages)[state.currentPage];
+  const currentPageData = state.storyPages[currentPageKey];
 
   return (
     <div className="flex flex-col items-center space-y-4">
-      <h1 className="text-xl font-bold">{Object.keys(prompts)[currentPage]}</h1>
-      <div className="flex flex-col items-center border-2 border-blue-500 max-w-xs w-full p-4">
-        <p className='mb-4'>{storyPages[Object.keys(prompts)[currentPage]].text}</p>
-        {storyPages[Object.keys(prompts)[currentPage]].image ? (
-          <img src={storyPages[Object.keys(prompts)[currentPage]].image} alt="Story Image" className="max-w-full h-auto" />
-        ) : (
-          <Image /> // Adjust size and other props as needed
-        )}
-      </div> 
+    <h1 className="text-xl font-bold">{currentPageKey}</h1>
+    <div className="flex flex-col items-center border-2 border-blue-500 max-w-xs w-full p-4">
+      <p className='mb-4'>{currentPageData.text}</p>
+      {currentPageData.image && (
+        <img src={currentPageData.image} alt="Story Image" className="max-w-full h-auto" />
+      )}
+    </div>
       <input
         type="text"
         placeholder="Enter your input for the next page"
-        value={userInput}
-        onChange={(e) => setUserInput(e.target.value)}
-        className="mt-2 border rounded p-2"
+        value={state.userInput}
+        onChange={(e) => dispatch({ type: 'SET_USER_INPUT', input: e.target.value })}
+        className="mt-2 border rounded p-2 text-black"
       />
       <button
         onClick={handleGeneratePage}
-        disabled={loading || userInput.trim() === ''}
+        disabled={state.loading || state.userInput.trim() === ''}
         className="border hover:bg-gray-100 rounded px-4 py-2"
       >
         Generate Page
       </button>
-      {isContentReady() && (
+      {state.currentPage < Object.keys(state.storyPages).length - 1 && currentPageData.text && currentPageData.image && (
         <button
           onClick={handleNextPage}
-          disabled={loading}
+          disabled={state.loading}
           className="border hover:bg-gray-100 rounded px-4 py-2"
         >
           Next Page
         </button>
       )}
-      {loading && <p>Loading...</p>}
+      {state.loading && <p>Loading...</p>}
     </div>
   );
 }
 
 export default StoryGenerator;
+
