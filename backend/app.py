@@ -5,9 +5,9 @@ import os
 from dotenv import load_dotenv
 from users import get_users
 from login import register, login 
-from generateStory import generate_story
 from discover import generate_story_book_list
 from profilePage import get_user_storybooks
+from ai import generate_story
 
 app = Flask(__name__)
 CORS(app)
@@ -47,11 +47,11 @@ def teardown_request(exception):
 def users_route(): 
     return jsonify(get_users())
 
+# generating the story with ai.py
 @app.route('/generate-story', methods=['POST'])
 def generate_ai():
     data = request.get_json()
-    prompt = data.get('prompt', '')
-    story = generate_story(prompt)
+    story = generate_story(data)
     return jsonify(story)
 
 # Add a new route to register a user
