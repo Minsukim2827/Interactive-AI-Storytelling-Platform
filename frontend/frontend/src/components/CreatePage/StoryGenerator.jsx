@@ -128,14 +128,14 @@ function StoryGenerator({ onUpdate, currentPage, onNextPage }) {
         Generate Page
       </button>
       {state.currentPage < Object.keys(state.storyPages).length - 1 && currentPageData.text && currentPageData.image && (
-        <button
-          onClick={handleNextPage}
-          disabled={state.loading}
-          className="border hover:bg-gray-100 rounded px-4 py-2"
-        >
-          Next Page
-        </button>
-      )}
+  <button
+    onClick={handleNextPage}
+    disabled={state.loading}
+    className="border hover:bg-gray-100 rounded px-4 py-2"
+  >
+    Next Page
+  </button>
+)}
       {state.loading && <p>Loading...</p>}
     </div>
   );
