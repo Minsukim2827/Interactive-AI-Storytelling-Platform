@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from './../axios'; 
 import { useAuth } from './../AuthProvider'; // Import useAuth to access user context
-import UserProfile from './UserProfile';
 
 const ProfilePage = () => {
     const [storybooks, setStorybooks] = useState([]);
@@ -53,7 +52,7 @@ const ProfilePage = () => {
                 ))}
             </div>
             <div className="max-w-7xl mt-10">
-            {/* <UserProfile /> */}
+
         </div>
         </div>
 
