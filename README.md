@@ -1,4 +1,31 @@
+
 # Interactive-AI-Storytelling-Platform
+
+## Current Features
+
+#### Homepage
+
+![1714637825914](image/README/1714637825914.png)
+
+#### Discovery Page
+
+![1714637830537](image/README/1714637830537.png)
+
+#### Login Page
+
+![1714637836817](image/README/1714637836817.png)
+
+#### Light/Dark Mode
+
+![1714637841273](image/README/1714637841273.png)
+
+#### Registration
+
+![1714637847109](image/README/1714637847109.png)
+
+#### Generating a Storybook
+
+![1714637854145](image/README/1714637854145.png)
 
 ## WorkFlow setup
 
@@ -45,7 +72,7 @@ DB_HOST=<your_database_host>
 DB_NAME=<your_database_name>
 DB_USER=<your_database_username>
 DB_PASSWORD=<your_database_password>
-API_KEY="<your_api_key>"
+OPENAI_KEY="<your_api_key>"
 ```
 
 ### Step 4. Run the Backend and Frontend
@@ -64,8 +91,6 @@ cd backend
 flask run
 ```
 
-
-
 ### Note:
 
 If Development server doesnt display the way it should, try a hard cache reset while on the local hosted page (chrome):
@@ -73,10 +98,6 @@ If Development server doesnt display the way it should, try a hard cache reset w
 ```
 ctrl shift r
 ```
-
-
-
-
 
 COMP602 - Software Development Practice
 
