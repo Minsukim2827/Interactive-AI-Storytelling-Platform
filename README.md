@@ -1,6 +1,8 @@
 
 # Interactive-AI-Storytelling-Platform
 
+
+
 ## Current Features
 
 #### Homepage
@@ -26,6 +28,14 @@
 #### Generating a Storybook
 
 ![1714637854145](image/README/1714637854145.png)
+
+## Tech Stack
+
+- FrontEnd: ReactJS, TailWindCSS, Vite
+
+- Backend: Python, Flask, OpenAI API
+
+- Database: PostgreSQL hosted on Heroku
 
 ## WorkFlow setup
 
