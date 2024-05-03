@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { BookOpenText } from 'lucide-react';
 import { ModeToggle } from './modeToggle';
 import { useAuth } from './../AuthProvider';
+import { TranslationButton } from './translationButton';
+import { useTranslation } from 'react-i18next'
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -14,10 +16,12 @@ const navItems = [
 const Navbar = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
+
 
   const handleLogout = () => {
     logout();
-    navigate('/logout'); 
+    navigate('/logout');
   };
 
   return (
@@ -25,7 +29,7 @@ const Navbar = () => {
       <div className="flex items-center">
         <Link to="/" className="flex items-center mr-2">
           <BookOpenText className="mr-2" />
-          AI Storytelling
+          {t('websiteName')}
         </Link>
       </div>
       <ul className="flex space-x-4 items-center">
@@ -38,6 +42,7 @@ const Navbar = () => {
         ))}
       </ul>
       <div className="flex items-center gap-4">
+        <TranslationButton />
         <ModeToggle />
         {user ? (
           <>
