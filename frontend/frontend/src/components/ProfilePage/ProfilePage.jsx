@@ -6,6 +6,7 @@ const ProfilePage = () => {
     const [storybooks, setStorybooks] = useState([]);
     const { user } = useAuth(); // Access user context
 
+    // Fetch user's storybooks
     useEffect(() => {
         const fetchData = async () => {
             if (user && user.id) { 

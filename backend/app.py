@@ -18,17 +18,20 @@ load_dotenv()
 
 #########################################################
 ############# Loading Database Connection ###############
-#########################################################
+########################################################
+#
 # Database connection details from environment variables
 def get_conn_string(): 
     return f"host={os.getenv('DB_HOST')} user={os.getenv('DB_USER')} dbname={os.getenv('DB_NAME')} password={os.getenv('DB_PASSWORD')} sslmode={os.getenv('DB_SSLMODE', 'prefer')}"
 
+# Database connection details
 def get_db_connection():
     if 'db' not in g:
         g.db = psycopg2.connect(get_conn_string())
         print("Database connected")
     return g.db
 
+# Close database connection
 @app.teardown_request
 def teardown_request(exception):
     db = g.pop('db', None)
@@ -44,6 +47,7 @@ def teardown_request(exception):
 #  import get_users function from app.py to generate db table
 # (this is just to test the db)
 
+# Fetch all users from the database
 @app.route('/api/users')
 def users_route(): 
     return jsonify(get_users())
@@ -64,7 +68,7 @@ def register_route():
 @app.route('/api/login', methods=['POST'])
 def login_route():
     return login()
-
+# Fetch storybooks for the discovery page
 @app.route('/api/storybooklist', methods=['GET'])
 def generate_discovery_page():
     print("received connection request")

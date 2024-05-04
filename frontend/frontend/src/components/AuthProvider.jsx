@@ -7,10 +7,12 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
+  // Function to log in the user
   const login = (user) => {
     setUser(user);
   };
 
+  // Function to log out the user
   const logout = () => {
     setUser(null);
   };

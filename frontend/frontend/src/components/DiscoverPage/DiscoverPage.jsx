@@ -4,6 +4,7 @@ import axios from './../axios'; // Ensure the path is correct
 const DiscoverPage = () => {
     const [storybooks, setStorybooks] = useState([]);
 
+    // Fetch storybooks data from the server
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -19,6 +20,7 @@ const DiscoverPage = () => {
         fetchData();
     }, []);
 
+    // Render the storybooks data
     return (
         <div className="flex flex-wrap justify-center ">
             <h1 className="w-full text-center text-3xl font-bold my-8">Discover Page</h1>

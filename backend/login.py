@@ -11,11 +11,13 @@ load_dotenv()
 def get_conn_string(): 
     return f"host={os.getenv('DB_HOST')} user={os.getenv('DB_USER')} dbname={os.getenv('DB_NAME')} password={os.getenv('DB_PASSWORD')} sslmode={os.getenv('DB_SSLMODE', 'prefer')}"
 
+# Database connection
 def get_db_connection():
     conn = psycopg2.connect(get_conn_string())
     print("Database connected")
     return conn
 
+# Register a new user
 def register():
     data = request.get_json()
     username = data.get('username')
@@ -46,7 +48,7 @@ def register():
         cursor.close()
         conn.close()
 
-
+# Login a user
 def login():
     data = request.get_json()
     username = data.get('username')

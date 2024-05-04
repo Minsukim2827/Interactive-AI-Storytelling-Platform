@@ -6,14 +6,17 @@ import os
 
 load_dotenv()
 
+# Database connection details from environment variables
 def get_conn_string():
     return f"host={os.getenv('DB_HOST')} user={os.getenv('DB_USER')} dbname={os.getenv('DB_NAME')} password={os.getenv('DB_PASSWORD')} sslmode={os.getenv('DB_SSLMODE', 'prefer')}"
 
+# Database connection
 def get_db_connection():
     conn = psycopg2.connect(get_conn_string())
     print("Database connected")
     return conn
 
+# Fetch story books created by user
 def get_user_storybooks(user_id):
     db = None
     try:

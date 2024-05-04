@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import CreatePage from './CreatePage/CreatePage'; // Adjust the path as necessary
 import UsersList from './UserPage/UsersList'; // Import the UsersList component
-import Navbar from './Navbar/Navbar'; 
+import Navbar from './Navbar/Navbar';
 import { ThemeProvider } from "@/components/Navbar/theme-provider"
 import HomePage from './HomePage/HomePage';
 import LoginPage from './LoginPage/LoginPage';
@@ -14,28 +14,29 @@ import DiscoverPage from './DiscoverPage/DiscoverPage';
 import ProfilePage from './ProfilePage/ProfilePage';
 import LogoutPage from './Navbar/LogoutPage';
 
+
 function App() {
   return (
-<AuthProvider>
+    <AuthProvider>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Router>
           <Navbar />
           <FadeInWrapper>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/create" element={<CreatePage />} />
-            <Route path="/users" element={<UsersList />} /> 
-            <Route path="/login" element={<LoginPage />} /> 
-            <Route path="/signup" element={<SignUpPage />} /> 
-            <Route path="/generate" element={<GenerateStoryPage />} />
-            <Route path="/discover" element={<DiscoverPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/logout" element={<LogoutPage />} />
-          </Routes>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/create" element={<CreatePage />} />
+              <Route path="/users" element={<UsersList />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/generate" element={<GenerateStoryPage />} />
+              <Route path="/discover" element={<DiscoverPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/logout" element={<LogoutPage />} />
+            </Routes>
           </FadeInWrapper>
         </Router>
       </ThemeProvider>
-      </AuthProvider>
+    </AuthProvider>
   );
 }
 

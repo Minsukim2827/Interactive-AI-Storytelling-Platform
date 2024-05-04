@@ -6,6 +6,7 @@ function UsersList() {
  const [users, setUsers] = useState([]);
  const [showTable, setShowTable] = useState(false);
 
+ // Fetch users from the API
  useEffect(() => {
     const fetchUsers = async () => {
       try {
