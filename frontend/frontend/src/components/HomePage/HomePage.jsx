@@ -2,6 +2,7 @@ import React from 'react';
 import Carousel from './Carousel';
 import { useTranslation } from 'react-i18next'
 
+// Home page component
 const HomePage = () => {
   const { t } = useTranslation()
   return (

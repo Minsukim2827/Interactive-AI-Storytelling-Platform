@@ -10,6 +10,7 @@ function SignUpPage() {
 
   const navigate = useNavigate(); // Hook for redirection
 
+  // Function to handle registration form submission
   const handleRegister = async (e) => {
     e.preventDefault();
     setErrorMessage(''); // Clear previous errors
