@@ -8,6 +8,7 @@ load_dotenv()
 
 client = OpenAI(api_key= os.getenv("OPENAI_KEY"))
 
+# Return generated image and text 
 def generate_story(data):
     prompt = data['prompt']
     if not prompt:
@@ -19,6 +20,7 @@ def generate_story(data):
     except Exception as e:
         return {'error': str(e)}, 500
 
+# Generate text based on the prompt
 def generate_text(prompt):
     try:
         response = client.chat.completions.create(
@@ -32,7 +34,8 @@ def generate_text(prompt):
     except Exception as e:
         print(f"an error occured: {e}")
         return None
-    
+
+# Generate an image based on the text
 def generate_image(prompt):
     try:
         if prompt is None:

@@ -4,13 +4,13 @@ import axios from './../axios'; // Ensure this path is correct based on your pro
 // Define the initial state for the story generator
 const initialState = {
   currentPage: 0,
-  storyPages: {
-    'cover page': { text: '', image: '' },
-    'introduction page': { text: '', image: '' },
-    'second page': { text: '', image: '' },
-    'third page': { text: '', image: '' },
-    'fourth page': { text: '', image: '' },
-    'last page': { text: '', image: '' }
+  storyPages: { // Define the pages of the story
+    'Cover Page': { text: '', image: '' },
+    'Introduction Page': { text: '', image: '' },
+    'Second Page': { text: '', image: '' },
+    'Third Page': { text: '', image: '' },
+    'Fourth Page': { text: '', image: '' },
+    'Last Page': { text: '', image: '' }
   },
   userInput: '',
   loading: false
@@ -57,7 +57,7 @@ function reducer(state, action) {
   }
 }
 
-
+// StoryGenerator component to generate story pages
 function StoryGenerator({ onUpdate, currentPage, onNextPage }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -72,14 +72,14 @@ function StoryGenerator({ onUpdate, currentPage, onNextPage }) {
       });
     }
   }, [currentPage]);
-  
 
+  // Function to handle the generate page button click
   const handleGeneratePage = async () => {
     dispatch({ type: 'SET_LOADING', loading: true });
     const pageKeys = Object.keys(state.storyPages);
     const currentPageKey = pageKeys[state.currentPage];
     const prompt = `Generate content for: ${currentPageKey} with input: ${state.userInput}`;
-    try {
+    try { // Call the backend API to generate the story page
       const response = await axios.post('/generate-story', { prompt });
       dispatch({
         type: 'SET_PAGE_CONTENT',
@@ -88,16 +88,17 @@ function StoryGenerator({ onUpdate, currentPage, onNextPage }) {
         image: response.data.image
       });
       onUpdate(currentPageKey, response.data.text, response.data.image);
-    } catch (error) {
+    } catch (error) { //
       console.error('Error generating story page:', error);
     }
     dispatch({ type: 'SET_LOADING', loading: false });
   };
 
+  // Function to handle the next page button click
   const handleNextPage = () => {
     if (state.currentPage < Object.keys(state.storyPages).length - 1) {
       dispatch({ type: 'NEXT_PAGE' });
-      onNextPage();  
+      onNextPage();
     }
   };
 
@@ -106,36 +107,36 @@ function StoryGenerator({ onUpdate, currentPage, onNextPage }) {
 
   return (
     <div className="flex flex-col items-center space-y-4">
-    <h1 className="text-xl font-bold">{currentPageKey}</h1>
-    <div className="flex flex-col items-center border-2 border-blue-500 max-w-xs w-full p-4">
-      <p className='mb-4'>{currentPageData.text}</p>
-      {currentPageData.image && (
-        <img src={currentPageData.image} alt="Story Image" className="max-w-full h-auto" />
-      )}
-    </div>
-      <input
+      <h1 className="text-xl font-bold">{currentPageKey}</h1>
+      <div className="flex flex-col items-center border-2 border-blue-500 max-w-xs w-full p-4">
+        <p className='mb-4'>{currentPageData.text}</p> {/* Display the generated text */}
+        {currentPageData.image && ( // Display the generated image
+          <img src={currentPageData.image} alt="Story Image" className="max-w-full h-auto" />
+        )}
+      </div>
+      <input // User input field
         type="text"
         placeholder="Enter your input for the next page"
         value={state.userInput}
         onChange={(e) => dispatch({ type: 'SET_USER_INPUT', input: e.target.value })}
         className="mt-2 border rounded p-2 text-black"
       />
-      <button
+      <button // Generate Page button
         onClick={handleGeneratePage}
         disabled={state.loading || state.userInput.trim() === ''}
-        className="border hover:bg-gray-100 rounded px-4 py-2"
+        className="border bg-green-500 hover:bg-green-600 rounded px-4 py-2"
       >
         Generate Page
       </button>
       {state.currentPage < Object.keys(state.storyPages).length - 1 && currentPageData.text && currentPageData.image && (
-  <button
-    onClick={handleNextPage}
-    disabled={state.loading}
-    className="border hover:bg-gray-100 rounded px-4 py-2"
-  >
-    Next Page
-  </button>
-)}
+        <button // Next Page button
+          onClick={handleNextPage}
+          disabled={state.loading}
+          className="border bg-blue-600 hover:bg-blue-700 rounded px-4 py-2"
+        >
+          Next Page
+        </button>
+      )}
       {state.loading && <p>Loading...</p>}
     </div>
   );

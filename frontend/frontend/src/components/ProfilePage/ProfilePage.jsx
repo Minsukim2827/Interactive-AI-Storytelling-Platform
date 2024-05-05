@@ -8,22 +8,21 @@ const ProfilePage = () => {
   const [selectedStorybook, setSelectedStorybook] = useState(null);
   const { user } = useAuth(); // Access user context
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (user && user.id) {
-        try {
-          const response = await axios.get(
-            `/api/user/storybooks?userId=${user.id}`
-          );
-          const storybooksArray = Object.values(response.data);
-          setStorybooks(storybooksArray);
-        } catch (error) {
-          console.error("Error fetching data: ", error);
-        }
-      } else {
-        console.log("No user ID found");
-      }
-    };
+    useEffect(() => {
+        const fetchData = async () => {
+            if (user && user.id) { 
+                try {
+
+                    const response = await axios.get(`/api/user/storybooks?userId=${user.id}`);
+                    const storybooksArray = Object.values(response.data);
+                    setStorybooks(storybooksArray);
+                } catch (error) {
+                    console.error('Error fetching data: ', error);
+                }
+            } else {
+                console.log('No user ID found');
+            }
+        };
 
     fetchData();
   }, [user]);

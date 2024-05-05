@@ -11,10 +11,12 @@ function LoginPage() {
   const { login } = useAuth(); 
   const navigate = useNavigate();
 
+  // Function to handle login form submission
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     try {
+      // Send the login data to the backend
       const response = await axios.post('/api/login', {
         username: username,
         password: password
@@ -29,7 +31,7 @@ function LoginPage() {
       setErrorMessage('Failed to login: ' + (error.response?.data?.error || 'Unknown error'));
     }
   };
-
+  
   return (
     <div className="flex items-center justify-center h-screen">
       <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleLogin}>
