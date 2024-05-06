@@ -6,7 +6,7 @@ const GenerateStoryPage = () => {
     const { user } = useAuth(); 
 
     return (
-        <div className="flex flex-col items-center mt-6 lg:mt-20 h-100vh">
+        <div className="flex flex-col items-center lg:mt-20 h-100vh pt-24">
             <h1 className="text-4xl sm:text-6xl lg:text-7xl text-center tracking-wide">
                 Generate Your Story
                 <br></br>

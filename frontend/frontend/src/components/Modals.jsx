@@ -15,7 +15,7 @@ const customStyles = {
     maxWidth: '100%', // Adjust the maximum width as needed
     maxHeight: '80vh', // Adjust the maximum height as needed
     overflow: 'auto', // Enable scrolling if content overflows
-    padding: '20px', // Add padding for better appearance
+    padding: '0px', // Add padding for better appearance
     border: 'none', // Remove default border
     borderRadius: '10px', // Apply border radius for rounded corners
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Apply shadow for depth
@@ -30,10 +30,10 @@ const customStyles = {
 const StorybookModal = ({ storybook, onClose }) => {
   return (
     <Modal isOpen={true} onRequestClose={onClose} style={customStyles}>
-      <div className="max-w-screen-lg mx-auto">
+      <div className="max-w-screen-lg mx-auto dark:bg-black">
         <h2 className="text-2xl font-bold mb-4 text-center">{storybook.storybook_title}</h2>
-        <div className="flex flex-wrap justify-center space-x-4 overflow-x-auto">
-          <div className="border border-gray-300 rounded-lg p-4 flex-shrink-0">
+        <div className="flex flex-wrap gap-4 justify-center space-x-4 overflow-x-auto dark:bg-black">
+          <div className="border border-gray-300 rounded-lg p-4 flex-shrink">
             <img src={storybook.coverimage} alt={storybook.storybook_title} className="w-full" />
             <p className="mt-2 text-center">{storybook.text1}</p>
           </div>
