@@ -91,6 +91,18 @@ def user_storybooks():
         print(f"An error occurred: {e}")
         return jsonify({"error": "An error occurred fetching user storybooks"}), 500
     
+@app.route('/api/user/bookmarks', methods=['GET'])
+def user_bookmarks():
+    user_id = request.args.get('userId')
+    if user_id is None:
+        return jsonify({"error": "Missing user ID"}), 400
+   #try:
+        #storybooks = get_user_bookmarks(user_id)
+        # return jsonify(storybooks)
+   # except Exception as e:
+     #   print(f"An error occurred: {e}")
+     #  return jsonify({"error": "An error occurred fetching user storybooks"}), 500
+    
 #save ai generated story to database
 @app.route('/api/user/save-story', methods=['POST'])
 def save_story_route():
