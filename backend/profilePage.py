@@ -67,3 +67,7 @@ def get_user_storybooks(user_id):
             cur.close()
         if db:
             db.close()
+
+
+#def get_user_bookmarks(user_id):
+    
