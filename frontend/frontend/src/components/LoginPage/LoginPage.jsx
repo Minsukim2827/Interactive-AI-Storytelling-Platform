@@ -34,7 +34,7 @@ function LoginPage() {
   
   return (
     <div className="flex items-center justify-center h-screen">
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleLogin}>
+      <form className="bg-gray-800 dark:bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 rounded-2xl" onSubmit={handleLogin}>
         {errorMessage && (
           <div className="mb-4 text-sm text-red-500">
             {errorMessage}
@@ -47,13 +47,13 @@ function LoginPage() {
           </div>
         )}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+          <label className="block text-white dark:text-gray-700 text-sm font-bold mb-2" htmlFor="username">
             Username
           </label>
           <input className="text-blue-700 shadow appearance-none border rounded w-full py-2 px-3 " id="username" type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         </div>
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+          <label className="block text-white dark:text-gray-700 text-sm font-bold mb-2" htmlFor="password">
             Password
           </label>
           <input className="text-blue-700 shadow appearance-none border rounded w-full py-2 px-3 mb-3" id="password" type="password" placeholder="**********" value={password} onChange={(e) => setPassword(e.target.value)} />
