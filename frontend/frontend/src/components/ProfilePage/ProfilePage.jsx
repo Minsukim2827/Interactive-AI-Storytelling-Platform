@@ -3,6 +3,7 @@ import axios from "./../axios";
 import { useAuth } from "./../AuthProvider"; // Import useAuth to access user context
 import ImageModal from "../Modals";
 import { Link } from 'react-router-dom';
+import StoryDisplay from "./StoryDisplay";
 
 
 const ProfilePage = () => {
@@ -58,38 +59,7 @@ const ProfilePage = () => {
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
         {storybooks.map((storybook) => (
-          <div
-            key={storybook.storybook_id}
-            className="text-white bg-gray-800 rounded-b lg:rounded-2xl p-4 flex flex-col justify-between leading-normal max-w-sm mx-auto"
-          >
-            <div className="mb-8">
-              <div className="font-bold text-xl mb-2 text-white">
-                {storybook.storybook_title}
-              </div>
-              <img
-                src={storybook.coverimage}
-                alt={storybook.storybook_title}
-                className="w-80"
-              />
-              <button className="text-white" onClick={() => openStorybookModal(storybook)}>
-                Open Modal
-              </button>
-              <p className="text-sm text-white flex items-center mt-4">
-                By: {storybook.username}
-              </p>
-            </div>
-            <div className="flex items-center">
-              <div className="text-sm text-white">
-                <div className="leading-none">
-                  Viewership: {storybook.viewership}
-                </div>
-                <div className="flex mt-2 text-white">
-                  <p className="mr-4 text-white">Likes: {storybook.likes}</p>
-                  <p>Dislikes: {storybook.dislikes}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+         <StoryDisplay key={storybook.storybook_id} storybook={storybook} openStorybookModal={openStorybookModal} />
         ))}
         {selectedStorybook && (
           <ImageModal storybook={selectedStorybook} onClose={closeStorybookModal} />
