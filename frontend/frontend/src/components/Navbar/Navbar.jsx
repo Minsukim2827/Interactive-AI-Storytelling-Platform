@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 
 const navItems = [
   { label: 'Home', href: '/' },
-  { label: 'Users', href: '/users' },
+  // { label: 'Users', href: '/users' },
   { label: 'Generate Story', href: '/generate' },
   { label: 'Discover', href: '/discover' },
 ];
@@ -25,7 +25,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="max-w-full bg-gray-800 text-white p-4 flex justify-between items-center sticky top-0 z-50 backdrop-blur-lg">
+    <nav className="absolute left-0 right-0 max-w-full bg-gray-800 text-white p-4 flex justify-between items-center top-0 z-50 backdrop-blur-lg">
       <div className="flex items-center">
         <Link to="/" className="flex items-center mr-2">
           <BookOpenText className="mr-2" />

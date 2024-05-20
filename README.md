@@ -1,7 +1,4 @@
-
 # Interactive-AI-Storytelling-Platform
-
-
 
 ## Current Features
 
@@ -31,10 +28,8 @@
 
 ## Tech Stack
 
-- FrontEnd: ReactJS, TailWindCSS, Vite
-
+- FrontEnd: ReactJS, TailWindCSS, Vite, Vitest (testing framework)
 - Backend: Python, Flask, OpenAI API
-
 - Database: PostgreSQL hosted on Heroku
 
 ## WorkFlow setup
