@@ -16,6 +16,7 @@ def generate_story(data):
     try:
         text_result = generate_text(prompt)
         image_result = generate_image(text_result)
+       # tts_ai = tts_ai(text_result)
         return {'text': text_result, 'image': image_result}
     except Exception as e:
         return {'error': str(e)}, 500
@@ -51,6 +52,23 @@ def generate_image(prompt):
         )
         print("image generation successful")
         return response.data[0].url
+    except Exception as e:
+        print(f"an error occured: {e}")
+        return None
+
+def tts_ai(prompt):
+    try:
+        if prompt is None:
+            print("Failed to generate text")
+            return None
+        
+        response = client.chat.completions.create(
+            model="text-to-speech",
+            voice="alloy",
+            input = f"{prompt}"
+        )
+        print("tts generation successful")
+        return response.choices[0].message.content
     except Exception as e:
         print(f"an error occured: {e}")
         return None
