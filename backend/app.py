@@ -9,6 +9,7 @@ from discover import generate_story_book_list
 from profilePage import get_user_storybooks
 from ai import generate_story
 from saveStory import save_story 
+from bookmarks import save_bookmarks
 
 app = Flask(__name__)
 CORS(app)
@@ -91,6 +92,7 @@ def user_storybooks():
         print(f"An error occurred: {e}")
         return jsonify({"error": "An error occurred fetching user storybooks"}), 500
     
+# Fetch user bookmarks
 @app.route('/api/user/bookmarks', methods=['GET'])
 def user_bookmarks():
     user_id = request.args.get('userId')
@@ -121,3 +123,16 @@ if __name__ == '__main__':
 
 if __name__ == '__main__':
     app.run(port=5000)
+
+# Save user bookmarks
+@app.route('/api/user/save-bookmarks', methods=['POST'])
+def save_bookmarks():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+    try:
+        # result = save_bookmarks(data)
+        return jsonify({"message": "Bookmarks saved successfully"}), 200
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return jsonify({"error": "An error occurred saving bookmarks"}), 500
