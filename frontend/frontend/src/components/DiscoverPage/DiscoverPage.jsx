@@ -54,7 +54,7 @@ const DiscoverPage = () => {
                                     Dislikes: {storybook.dislikes}
                                 </button>
                                 <button
-                                    className="text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-3 rounded-full ml-2"
+                                    className="text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-3 rounded-full ml-auto"
                                     onClick={() => handleBookmark(storybook.storybook_id)}
                                 >
                                     <FontAwesomeIcon icon={faBookmark} />
