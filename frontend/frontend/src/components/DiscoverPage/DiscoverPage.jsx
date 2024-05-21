@@ -24,10 +24,22 @@ const DiscoverPage = () => {
         fetchData();
     }, []);
 
+    // Function to handle bookmarking a story
     const handleBookmark = async (storybookId) => {
-        if(user)
+        if (user) {
+            const bookmarkData = {
+                userId: user.id,
+                storybookId: storybookId,
+            };
             console.log(storybookId);
-        else{
+            axios.post('/api/user/bookmark-story', { bookmarkData })
+                .then(response => {
+                    console.log("Story bookmarked successfully:", response.data);
+                })
+                .catch(error => {
+                    console.error("Error bookmarking story:", error);
+                });
+        } else {
             console.log("User not authenticated");
 
         }

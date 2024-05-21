@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "./../axios";
 import { useAuth } from "./../AuthProvider"; // Import useAuth to access user context
 import ImageModal from "../Modals";
+import StoryDisplay from "./StoryDisplay";
 
 const Bookmarks = () => {
     const { user } = useAuth(); // Access user context
-    
+
     return (
         <div className="w-full flex justify-center">
             {user ? (
