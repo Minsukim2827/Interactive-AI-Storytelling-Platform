@@ -23,9 +23,22 @@ def get_user_bookmarks(user_id):
         db = get_db_connection()
         cur = db.cursor()
         print("Attempting to query user's bookmarks")
-        query = "Select * from public.bookmarks where user_id = %s" #need proper query
+        query = """
+        SELECT u.username, s.storybook_id, s.storybook_title, s.coverimage,
+        sd.likes, sd.dislikes, sd.viewership,
+        s.image1, s.text1, s.image2, s.text2,
+        s.image3, s.text3, s.image4, s.text4,
+        s.image5, s.text5
+        FROM public.bookmarks b
+        JOIN public.storybooks s ON b.storybook_id = s.storybook_id
+        JOIN public.storybook_data sd ON s.storybook_id = sd.storybook_id
+        JOIN public.users u ON s.user_id = u.id
+        WHERE b.user_id = %s;;
+        """
         cur.execute(query, (user_id,))
         rows = cur.fetchall()
+        print("Fetched rows:", rows)
+
         bookmarks = {
             row[1]: {
                 "username": row[0],
@@ -77,14 +90,19 @@ def save_bookmarks(bookmark_data):
         cur.execute(query, (user_id, storybook_id))
         row = cur.fetchone()
         if row:
-            return {"error": "Bookmark already exists"}
+            query = "DELETE FROM public.bookmarks WHERE user_id = %s AND storybook_id = %s"
+            cur.execute(query, (user_id, storybook_id))
+            db.commit()
+            print("Successfully unsaved bookmark into database")
+            return {"message": "Bookmark unsaved successfully"}
         
-        query = "INSERT INTO public.bookmarks (user_id, storybook_id) VALUES (%s, %s)"
-        cur.execute(query, (user_id, storybook_id))
-        db.commit()
-
-        print("Successfully saved bookmark into database")
-        return {"message": "Bookmark saved successfully"}
+        else:
+            query = "INSERT INTO public.bookmarks (user_id, storybook_id) VALUES (%s, %s)"
+            cur.execute(query, (user_id, storybook_id))
+            db.commit()
+            print("Successfully saved bookmark into database")
+            return {"message": "Bookmark saved successfully"}
+        
     except Exception as e:
         db.rollback()
         print(f"An error occurred: {e}")

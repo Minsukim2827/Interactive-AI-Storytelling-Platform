@@ -65,7 +65,7 @@ const ProfilePage = () => {
             onClick={toggleView}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
           >
-            Bookmarks
+            {viewMode === 'storybooks' ? 'Bookmarks' : 'Your Books'}
           </button>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">
             Settings
@@ -74,7 +74,7 @@ const ProfilePage = () => {
       )}
       {viewMode === 'storybooks' && (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto mt-5">
             {storybooks.map((storybook) => (
               <StoryDisplay key={storybook.storybook_id} storybook={storybook} openStorybookModal={openStorybookModal} />
             ))}
@@ -86,7 +86,7 @@ const ProfilePage = () => {
       )}
       {viewMode === 'bookmarks' && (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto mt-5">
             {bookmarks.map((storybook) => (
               <StoryDisplay key={storybook.storybook_id} storybook={storybook} openStorybookModal={openStorybookModal} />
             ))}
