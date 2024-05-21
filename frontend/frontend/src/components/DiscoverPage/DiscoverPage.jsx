@@ -32,7 +32,7 @@ const DiscoverPage = () => {
                 storybookId: storybookId,
             };
             console.log(storybookId);
-            axios.post('/api/user/bookmark-story', { bookmarkData })
+            axios.post('/api/user/save-bookmarks', bookmarkData )
                 .then(response => {
                     console.log("Story bookmarked successfully:", response.data);
                 })

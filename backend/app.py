@@ -126,7 +126,7 @@ if __name__ == '__main__':
 
 # Save user bookmarks
 @app.route('/api/user/save-bookmarks', methods=['POST'])
-def save_bookmarks():
+def save_bookmark():
     bookmark_data = request.get_json()
     if not bookmark_data:
         return jsonify({"error": "No data provided"}), 400

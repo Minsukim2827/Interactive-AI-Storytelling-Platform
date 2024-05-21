@@ -8,8 +8,11 @@ import StoryDisplay from "./StoryDisplay";
 
 const ProfilePage = () => {
   const [storybooks, setStorybooks] = useState([]);
+  const [bookmarks, setBookmarks] = useState([]);
   const [selectedStorybook, setSelectedStorybook] = useState(null);
   const { user } = useAuth(); // Access user context
+  const [viewMode, setViewMode] = useState('storybooks'); // Track view mode
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,7 +21,14 @@ const ProfilePage = () => {
 
           const response = await axios.get(`/api/user/storybooks?userId=${user.id}`);
           const storybooksArray = Object.values(response.data);
+
+          const bookmarksResponse = await axios.get(`/api/user/bookmarks?userId=${user.id}`);
+          const bookmarksArray = Object.values(bookmarksResponse.data);
+
+          console.log(storybooksArray);
+          console.log(bookmarksArray);
           setStorybooks(storybooksArray);
+          setBookmarks(bookmarksArray);
         } catch (error) {
           console.error('Error fetching data: ', error);
         }
@@ -38,6 +48,10 @@ const ProfilePage = () => {
     setSelectedStorybook(null);
   };
 
+  const toggleView = () => {
+    setViewMode(viewMode === 'storybooks' ? 'bookmarks' : 'storybooks');
+  };
+
   return (
     <div className="flex flex-col flex-wrap justify-center align-center items-center pt-20">
       {/* set title based on the logged in users name */}
@@ -47,26 +61,44 @@ const ProfilePage = () => {
 
       {user && (
         <div className="mt-1 ">
-          <Link to="/bookmarks">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">
-              Bookmarks
-            </button>
-          </Link>
+          <button
+            onClick={toggleView}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
+          >
+            Bookmarks
+          </button>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">
             Settings
           </button>
         </div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
-        {storybooks.map((storybook) => (
-         <StoryDisplay key={storybook.storybook_id} storybook={storybook} openStorybookModal={openStorybookModal} />
-        ))}
-        {selectedStorybook && (
-          <ImageModal storybook={selectedStorybook} onClose={closeStorybookModal} />
-        )}
-      </div>
+      {viewMode === 'storybooks' && (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
+            {storybooks.map((storybook) => (
+              <StoryDisplay key={storybook.storybook_id} storybook={storybook} openStorybookModal={openStorybookModal} />
+            ))}
+          </div>
+          {selectedStorybook && (
+            <ImageModal storybook={selectedStorybook} onClose={closeStorybookModal} />
+          )}
+        </>
+      )}
+      {viewMode === 'bookmarks' && (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
+            {bookmarks.map((storybook) => (
+              <StoryDisplay key={storybook.storybook_id} storybook={storybook} openStorybookModal={openStorybookModal} />
+            ))}
+          </div>
+          {selectedStorybook && (
+            <ImageModal storybook={selectedStorybook} onClose={closeStorybookModal} />
+          )}
+        </>
+      )}
       <div className="max-w-7xl mt-10"></div>
     </div>
+
   );
 };
 
