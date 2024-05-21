@@ -64,19 +64,25 @@ def get_user_bookmarks(user_id):
 
 # save bookmarks
 def save_bookmarks(bookmark_data):
-    db = None
-    cur = None
+    db = get_db_connection()
+    cur = db.cursor()
     try: 
-        db = get_db_connection()
-        cursor = db.cursor()
         print(bookmark_data)
+        print(bookmark_data['userId'])
+        print(bookmark_data['storybookId'])
         print('attempting to put into database')
-        query = "SELECT * FROM public.bookmarks WHERE user_id = %s AND storybook_id = %s" #real query needed
-        cursor.execute(query, (bookmark_data['userId'], bookmark_data['storybook_id']))
-        row = cursor.fetchone()
+        user_id = bookmark_data['userId']
+        storybook_id = bookmark_data['storybookId']
+        query = "SELECT * FROM public.bookmarks WHERE user_id = %s AND storybook_id = %s" 
+        cur.execute(query, (user_id, storybook_id))
+        row = cur.fetchone()
         if row:
             return {"error": "Bookmark already exists"}
+        
+        query = "INSERT INTO public.bookmarks (user_id, storybook_id) VALUES (%s, %s)"
+        cur.execute(query, (user_id, storybook_id))
         db.commit()
+
         print("Successfully saved bookmark into database")
         return {"message": "Bookmark saved successfully"}
     except Exception as e:
@@ -88,3 +94,26 @@ def save_bookmarks(bookmark_data):
             cur.close()
         if db:
             db.close()
+
+# def unsave_bookmarks(bookmark_data):
+#     db = None
+#     cur = None
+#     try: 
+#         db = get_db_connection()
+#         cursor = db.cursor()
+#         print(bookmark_data)
+#         print('attempting to put into database')
+#         query = "DELETE FROM public.bookmarks WHERE user_id = %s AND storybook_id = %s" #real query needed
+#         cursor.execute(query, (bookmark_data['userId'], bookmark_data['storybook_id']))
+#         db.commit()
+#         print("Successfully unsaved bookmark into database")
+#         return {"message": "Bookmark unsaved successfully"}
+#     except Exception as e:
+#         db.rollback()
+#         print(f"An error occurred: {e}")
+#         return {"error": "Failed to unsave bookmark"}
+#     finally:
+#         if cur:
+#             cur.close()
+#         if db:
+#             db.close() 

@@ -40,6 +40,15 @@ CREATE TABLE public.storybook_data (
     FOREIGN KEY (storybook_id) REFERENCES public.storybooks (storybook_id)
 );
 
+-- Create the bookmarks table
+CREATE TABLE public.bookmarks (
+    bookmark_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    storybook_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES public.users (id)
+);
+
+
 -- Insert example entries into the users table
 INSERT INTO public.users (username, email, password) VALUES
 ('Alice', 'alice@example.com', 'password123'),
