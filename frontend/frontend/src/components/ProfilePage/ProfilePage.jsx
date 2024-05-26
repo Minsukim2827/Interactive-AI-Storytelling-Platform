@@ -65,7 +65,7 @@ const ProfilePage = () => {
             onClick={toggleView}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
           >
-            {viewMode === 'storybooks' ? 'Bookmarks' : 'Your Books'}
+            {viewMode === 'storybooks' ? 'View Bookmarks' : 'View Storybooks'}
           </button>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">
             Settings
