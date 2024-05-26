@@ -96,4 +96,26 @@ describe('ProfilePage', () => {
     // Wait for the storybook to be displayed
     await waitFor(() => expect(screen.getByText('Storybook 1')).toBeInTheDocument());
   });
+  it('activates ai-generated voice when button is clicked', async () => {
+    const mockStorybooks = [
+      { storybook_id: 1, storybook_title: 'Storybook 1', coverimage: 'url1', username: 'user1', viewership: 100, likes: 10, dislikes: 2 }
+    ];
+  
+    axios.get.mockResolvedValue({ data: mockStorybooks });
+  
+    render(
+      <AuthProvider>
+        <ProfilePage />
+      </AuthProvider>
+    );
+  
+    // Wait for the storybook to be displayed before clicking
+    await waitFor(() => expect(screen.getByText('Storybook 1')).toBeInTheDocument());
+  
+    // Click the AI voice button
+    userEvent.click(screen.getByText('Activate AI Voice'));
+  
+    // Wait for the AI voice to be activated
+    await waitFor(() => expect(screen.getByText('AI Voice Activated')).toBeInTheDocument());
+  });
 });
