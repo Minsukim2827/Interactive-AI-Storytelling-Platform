@@ -63,4 +63,37 @@ describe('ProfilePage', () => {
     // Wait for the storybook to be displayed before clicking
     await waitFor(() => expect(screen.getByText('Storybook 1')).toBeInTheDocument());
   });
+  it('toggles between storybooks and bookmarks view', async () => {
+    const mockStorybooks = [
+      { storybook_id: 1, storybook_title: 'Storybook 1', coverimage: 'url1', username: 'user1', viewership: 100, likes: 10, dislikes: 2 }
+    ];
+  
+    const mockBookmarks = [
+      { storybook_id: 2, storybook_title: 'Storybook 2', coverimage: 'url2', username: 'user2', viewership: 150, likes: 15, dislikes: 3 }
+    ];
+  
+    axios.get.mockResolvedValueOnce({ data: mockStorybooks });
+    axios.get.mockResolvedValueOnce({ data: mockBookmarks });
+  
+    render(
+      <AuthProvider>
+        <ProfilePage />
+      </AuthProvider>
+    );
+  
+    // Wait for the storybook to be displayed before clicking
+    await waitFor(() => expect(screen.getByText('Storybook 1')).toBeInTheDocument());
+  
+    // Toggle view mode
+    userEvent.click(screen.getByText('View Bookmarks'));
+  
+    // Wait for the bookmarks to be displayed
+    await waitFor(() => expect(screen.getByText('Storybook 2')).toBeInTheDocument());
+  
+    // Toggle back to storybooks
+    userEvent.click(screen.getByText('View Storybooks'));
+  
+    // Wait for the storybook to be displayed
+    await waitFor(() => expect(screen.getByText('Storybook 1')).toBeInTheDocument());
+  });
 });
