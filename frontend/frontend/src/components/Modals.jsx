@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import AITTS from './AITTS';
 
 Modal.setAppElement('#root');
 
@@ -40,22 +41,27 @@ const StorybookModal = ({ storybook, onClose }) => {
           <div className="border border-gray-300 rounded-lg p-4 flex-shrink-0">
             <img src={storybook.image1} alt={storybook.storybook_title} className="w-full" />
             <p className="mt-2 text-center">{storybook.text1}</p>
+            <AITTS text={storybook.text1} />
           </div>
           <div className="border border-gray-300 rounded-lg p-4 flex-shrink-0">
             <img src={storybook.image2} alt={storybook.storybook_title} className="w-full" />
             <p className="mt-2 text-center">{storybook.text2}</p>
+            <AITTS text={storybook.text2} />
           </div>
           <div className="border border-gray-300 rounded-lg p-4 flex-shrink-0">
             <img src={storybook.image3} alt={storybook.storybook_title} className="w-full" />
             <p className="mt-2 text-center">{storybook.text3}</p>
+            <AITTS text={storybook.text3} />
           </div>
           <div className="border border-gray-300 rounded-lg p-4 flex-shrink-0">
             <img src={storybook.image4} alt={storybook.storybook_title} className="w-full" />
             <p className="mt-2 text-center">{storybook.text4}</p>
+            <AITTS text={storybook.text4} />
           </div>
           <div className="border border-gray-300 rounded-lg p-4 flex-shrink-0">
             <img src={storybook.image5} alt={storybook.storybook_title} className="w-full" />
             <p className="mt-2 text-center">{storybook.text5}</p>
+            <AITTS text={storybook.text5} />
           </div>
         </div>
         <div className="flex justify-center mt-4">

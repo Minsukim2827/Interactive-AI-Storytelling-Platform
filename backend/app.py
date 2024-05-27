@@ -7,7 +7,7 @@ from users import get_users
 from login import register, login 
 from discover import generate_story_book_list
 from profilePage import get_user_storybooks
-from ai import generate_story
+from ai import generate_story, tts_ai
 from saveStory import save_story 
 from bookmarks import save_bookmarks, get_user_bookmarks
 
@@ -137,6 +137,14 @@ def save_bookmark():
     
     return jsonify(result), 200
 
-    
-
-
+@app.route('/api/user/tts', methods=['POST'])
+def tts_ai():
+    data = request.get_json()
+    prompt = data['prompt']
+    if not prompt:
+        return {'error': 'Prompt is required'}, 400
+    try:
+        text_result = tts_ai(prompt)
+        return {'text': text_result}
+    except Exception as e:
+        return {'error': str(e)}, 500
