@@ -1,6 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
 import AITTS from './AITTS';
+import DownloadButton from './DownloadButton';
+import generatePDF from './generatePDF';
 
 Modal.setAppElement('#root');
 
@@ -29,9 +31,14 @@ const customStyles = {
 };
 
 const StorybookModal = ({ storybook, onClose }) => {
+  // Function to handle download action
+  const handleDownload = () => {
+    generatePDF(storybook); // Pass the storybook data directly
+  };
+
   return (
     <Modal isOpen={true} onRequestClose={onClose} style={customStyles}>
-      <div className="max-w-screen-lg mx-auto dark:bg-black">
+      <div id="pdfContent" className="max-w-screen-lg mx-auto dark:bg-black">
         <h2 className="text-2xl font-bold mb-4 text-center">{storybook.storybook_title}</h2>
         <div className="flex flex-wrap gap-4 justify-center space-x-4 overflow-x-auto dark:bg-black">
           <div className="border border-gray-300 rounded-lg p-4 flex-shrink">
@@ -63,6 +70,7 @@ const StorybookModal = ({ storybook, onClose }) => {
             <p className="mt-2 text-center">{storybook.text5}</p>
             <AITTS text={storybook.text5} />
           </div>
+          <DownloadButton onClick={handleDownload} />
         </div>
         <div className="flex justify-center mt-4">
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={onClose}>Close Modal</button>
