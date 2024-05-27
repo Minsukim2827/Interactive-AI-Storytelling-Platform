@@ -1,0 +1,88 @@
+.settings-modal {
+    width: 900px;
+    height: 500px;
+    margin: auto;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .settings-overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .settings-header {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+  }
+  
+  .settings-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .sub-nav-bar {
+    width: 200px;
+    height: 375px;
+    margin-right: 20px;
+    border-right: 1px solid #ccc;
+    padding-right: 10px;
+  }
+  
+  .settings-button-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .close-button-wrapper {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+  }
+  
+
+  .account-settings {
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .settings-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+  }
+  
+  .form-label {
+    font-weight: bold;
+  }
+  
+  .form-input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+  }
+  
+  .submit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+  
