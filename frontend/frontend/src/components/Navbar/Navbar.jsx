@@ -1,23 +1,31 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { BookOpenText } from 'lucide-react';
 import { ModeToggle } from './modeToggle';
 import { useAuth } from './../AuthProvider';
 import { TranslationButton } from './translationButton';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
+import SettingsModal from '../SettingsModal/SettingsModal';
 
 const navItems = [
   { label: 'Home', href: '/' },
-  // { label: 'Users', href: '/users' },
   { label: 'Generate Story', href: '/generate' },
   { label: 'Discover', href: '/discover' },
 ];
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { t } = useTranslation();
 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
   const handleLogout = () => {
     logout();
@@ -50,6 +58,7 @@ const Navbar = () => {
             <Link to="/profile" className="px-3 py-2 rounded bg-green-500 hover:bg-green-700 text-white transition-colors">
               Profile
             </Link>
+            <button onClick={openModal} className="px-3 py-2 rounded bg-blue-500 hover:bg-blue-700 text-white transition-colors">Settings</button>
             <button onClick={handleLogout} className="px-3 py-2 rounded bg-red-500 hover:bg-red-700 text-white transition-colors">
               Logout
             </button>
@@ -60,6 +69,8 @@ const Navbar = () => {
           </Link>
         )}
       </div>
+      {/* Render the SettingsModal component */}
+      <SettingsModal isOpen={modalIsOpen} onRequestClose={closeModal} />
     </nav>
   );
 };
