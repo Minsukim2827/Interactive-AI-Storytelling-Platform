@@ -1,4 +1,5 @@
 # from transformers import pipeline
+from io import BytesIO
 import requests
 import os
 from dotenv import load_dotenv
@@ -16,7 +17,6 @@ def generate_story(data):
     try:
         text_result = generate_text(prompt)
         image_result = generate_image(text_result)
-       # tts_ai = tts_ai(text_result)
         return {'text': text_result, 'image': image_result}
     except Exception as e:
         return {'error': str(e)}, 500
@@ -56,19 +56,22 @@ def generate_image(prompt):
         print(f"an error occured: {e}")
         return None
 
-def tts_ai(prompt):
+def tts_generate(prompt):
     try:
         if prompt is None:
-            print("Failed to generate text")
+            print("Failed to generate tts")
             return None
-        
-        response = client.chat.completions.create(
-            model="text-to-speech",
-            voice="alloy",
+        print("Attempting to generate tts")
+        response = client.audio.speech.create(
+            model="tts-1",
+            voice="shimmer",
             input = f"{prompt}"
         )
         print("tts generation successful")
-        return response.choices[0].message.content
+        audio_stream = BytesIO(response.content)
+        return audio_stream
+
+
     except Exception as e:
         print(f"an error occured: {e}")
         return None
