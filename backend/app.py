@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, g
+from flask import Flask, request, jsonify, g, send_file
 from flask_cors import CORS
 import psycopg2
 import os
@@ -7,7 +7,7 @@ from users import get_users
 from login import register, login 
 from discover import generate_story_book_list
 from profilePage import get_user_storybooks
-from ai import generate_story, tts_ai
+from ai import generate_story, tts_generate
 from saveStory import save_story 
 from bookmarks import save_bookmarks, get_user_bookmarks
 
@@ -140,11 +140,22 @@ def save_bookmark():
 @app.route('/api/user/tts', methods=['POST'])
 def tts_ai():
     data = request.get_json()
-    prompt = data['prompt']
+    print("Received data:", data)  # Log the received data for debugging
+    prompt = data['text']
     if not prompt:
         return {'error': 'Prompt is required'}, 400
     try:
-        text_result = tts_ai(prompt)
-        return {'text': text_result}
+        audio_stream = tts_generate(prompt)
+        if audio_stream is None:
+            return jsonify({'error': 'TTS generation failed'}), 500
+
+        audio_stream.seek(0)
+
+        return send_file(
+            audio_stream,
+            mimetype='audio/mpeg',  # Specify the correct MIME type
+            as_attachment=True,
+            download_name='speech.mp3'  # Use download_name for newer Flask versions
+        )
     except Exception as e:
         return {'error': str(e)}, 500
