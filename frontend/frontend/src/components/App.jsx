@@ -13,6 +13,7 @@ import GenerateStoryPage from './GenerateStoryPage/GenerateStoryPage';
 import DiscoverPage from './DiscoverPage/DiscoverPage';
 import ProfilePage from './ProfilePage/ProfilePage';
 import LogoutPage from './Navbar/LogoutPage';
+import SettingsPage from './SettingsModal/SettingsModal';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
               <Route path="/discover" element={<DiscoverPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/logout" element={<LogoutPage />} />
+              <Route path="/settings" element={<SettingsPage />} />          
             </Routes>
           </FadeInWrapper>
         </Router>
