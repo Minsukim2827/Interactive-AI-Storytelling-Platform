@@ -51,7 +51,6 @@ const Navbar = () => {
       </ul>
       <div className="flex items-center gap-4">
         <TranslationButton />
-        <ModeToggle />
         {user ? (
           <>
             <span className="font-bold">{user.username}</span>

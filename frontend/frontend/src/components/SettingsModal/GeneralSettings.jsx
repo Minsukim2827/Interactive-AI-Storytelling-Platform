@@ -2,6 +2,7 @@ import React from "react";
 import { useTheme, ThemeProvider } from "../Navbar/theme-provider"; // Update the path accordingly
 import lightPreviewImage from "./lightTheme.png"; // Update with your image paths
 import darkPreviewImage from "./darkTheme.png";
+import { TranslationButton } from "../Navbar/translationButton";
 
 const GeneralSettings = () => {
   const { theme, setTheme } = useTheme(); // Access theme context
@@ -68,15 +69,8 @@ const previewImageStyle = {
   height: "50px",
   borderRadius: "10%",
   objectFit: "cover",
+  border: "1px solid grey",
 };
 
-// Wrap GeneralSettings with ThemeProvider
-const GeneralSettingsWithThemeProvider = () => {
-  return (
-    <ThemeProvider>
-      <GeneralSettings />
-    </ThemeProvider>
-  );
-};
 
-export default GeneralSettingsWithThemeProvider;
+export default GeneralSettings;

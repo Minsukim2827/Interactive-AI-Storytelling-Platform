@@ -4,7 +4,7 @@ const AccessibilitySettings = () => {
   return (
     <div>
       <h3>Accessibility Settings</h3>
-      {/* Add content for accessibility settings */}
+      {/* content for accessibility settings to be added */}
     </div>
   );
 };
