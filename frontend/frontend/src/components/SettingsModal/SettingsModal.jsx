@@ -44,7 +44,7 @@ const SettingsModal = ({ isOpen, onRequestClose }) => {
       </div>
       <div style={{ display: 'flex', alignItems: 'flex-start', marginLeft: '20px', position: 'relative' }}>
         <div className='subNavBar' style={{ width: '200px', height: '375px', marginRight: '20px', borderRight: '1px solid #ccc', paddingRight: '10px' }}>
-          {/* Add your settings options here with icons */}
+          {/* settings options with icons */}
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}><FaCog style={{ marginRight: '5px' }} /><button className="settings-button" onClick={() => handlePageChange('General')}>General</button></div>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}><FaUser style={{ marginRight: '5px' }} /><button className="settings-button" onClick={() => handlePageChange('Account')}>Account</button></div>
           <div style={{ display: 'flex', alignItems: 'center' }}><FaUniversalAccess style={{ marginRight: '5px' }} /><button className="settings-button" onClick={() => handlePageChange('Accessibility')}>Accessibility</button></div>

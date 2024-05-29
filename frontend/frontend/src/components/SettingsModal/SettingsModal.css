@@ -76,10 +76,12 @@
   .submit-button {
     background-color: #007bff;
     color: white;
-    border: none;
+    /* border: 10px;
+    padding: 5px 5px; */
     border-radius: 4px;
-    padding: 10px 20px;
     cursor: pointer;
+    width: 110px;
+    height: 30px;
   }
   
   .submit-button:hover {
