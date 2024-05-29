@@ -137,25 +137,26 @@ def save_bookmark():
     
     return jsonify(result), 200
 
+# Text-to-speech API route
 @app.route('/api/user/tts', methods=['POST'])
 def tts_ai():
-    data = request.get_json()
-    print("Received data:", data)  # Log the received data for debugging
+    data = request.get_json() # Get the data from the POST request
+    print("Received data:", data)  
     prompt = data['text']
-    if not prompt:
+    if not prompt: # Check if the prompt is empty
         return {'error': 'Prompt is required'}, 400
-    try:
+    try: # Try to generate the audio stream
         audio_stream = tts_generate(prompt)
         if audio_stream is None:
             return jsonify({'error': 'TTS generation failed'}), 500
 
-        audio_stream.seek(0)
+        audio_stream.seek(0) # Reset the stream position
 
-        return send_file(
+        return send_file( # Send the audio stream as a file
             audio_stream,
-            mimetype='audio/mpeg',  # Specify the correct MIME type
+            mimetype='audio/mpeg',   # Set the MIME type
             as_attachment=True,
-            download_name='speech.mp3'  # Use download_name for newer Flask versions
+            download_name='speech.mp3' # Set the download name  
         )
-    except Exception as e:
+    except Exception as e: # Catch any exceptions
         return {'error': str(e)}, 500
