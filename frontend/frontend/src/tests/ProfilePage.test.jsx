@@ -1,6 +1,6 @@
 // ProfilePage.test.jsx
 import { describe, it, expect, vi } from 'vitest';
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axios from '../components/axios';
 import ProfilePage from '../components/ProfilePage/ProfilePage';
@@ -67,24 +67,23 @@ describe('ProfilePage', () => {
     const mockBookmarks = [
       { storybook_id: 1, storybook_title: 'Storybook 1', coverimage: 'url1', username: 'user1', viewership: 100, likes: 10, dislikes: 2 }
     ];
-  
+
     axios.get.mockResolvedValueOnce({ data: mockBookmarks });
-  
+
     render(
       <AuthProvider>
         <ProfilePage />
       </AuthProvider>
     );
-  
-    // Initially, ensure the component renders without errors
+
+    // Wait for the profile to be displayed
     await waitFor(() => expect(screen.getByText('testuser\'s Profile Page')).toBeInTheDocument());
-  
+
     // Toggle to bookmarks view
     userEvent.click(screen.getByText('View Bookmarks'));
-  
+
     // Wait for the bookmarks to be displayed
     await waitFor(() => expect(screen.getByText('Storybook 1')).toBeInTheDocument());
-
 
   });
   it('activates ai-generated voice when button is clicked', async () => {
@@ -103,10 +102,18 @@ describe('ProfilePage', () => {
     // Wait for the storybook to be displayed before clicking
     await waitFor(() => expect(screen.getByText('Storybook 1')).toBeInTheDocument());
 
-    // Click the AI voice button
-    userEvent.click(screen.getByText('Activate AI Voice'));
+    // Click the button to activate the audio
+    fireEvent.click(screen.getByText('Open Modal'));
+    
+    // Get audio buttons
+    const playAudioButtons = screen.getAllByRole('button', { name: /Play audio/i });
 
-    // Wait for the AI voice to be activated
-    await waitFor(() => expect(screen.getByText('AI Voice Activated')).toBeInTheDocument());
+    // Find the first play audio button and click it
+    const playAudioButton = playAudioButtons[0];
+    fireEvent.click(playAudioButton);
+
+    // Check if the audio is playing
+    expect(screen.getByText('Audio is playing...')).toBeInTheDocument();
+
   });
 });
