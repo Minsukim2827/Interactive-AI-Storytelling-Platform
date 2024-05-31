@@ -18,6 +18,11 @@ function CreatePage() {
   const [saveStatus, setSaveStatus] = useState(null);
   const navigate = useNavigate();
 
+  // Function to handle the parameters submitted by the user
+  const handleSetupSubmit = () => {
+    setShowSetupPage(false); 
+  };
+
   // Function to update the pages array
   const handleUpdate = (pageKey, text, image) => {
     setPages(oldPages => {
@@ -101,7 +106,7 @@ function CreatePage() {
     <div className="w-full flex justify-center">
       {user ? (
         showSetupPage ? (
-          <StorySetup></StorySetup>
+          <StorySetup onSubmit={handleSetupSubmit} /> 
         ) : (
           <div className="w-11/12 max-w-screen-lg flex flex-col items-center">
             <Navigation totalPages={maxViewedPageIndex + 1} currentFormIndex={currentFormIndex} /> {/* Display navigation */}
@@ -118,7 +123,9 @@ function CreatePage() {
         )
       ) : (
         // Display message if user is not logged in
-        <p>Please log in to access this page.</p>
+        <div className="text-center mt-24 font-bold ">
+          <p>Please log in to access this page.</p>
+        </div>
       )}
     </div>
   );
