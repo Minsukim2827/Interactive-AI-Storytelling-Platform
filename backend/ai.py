@@ -56,22 +56,25 @@ def generate_image(prompt):
         print(f"an error occured: {e}")
         return None
 
+# Generate text-to-speech audio stream
 def tts_generate(prompt):
     try:
-        if prompt is None:
+        if prompt is None: # Check if the prompt is empty
             print("Failed to generate tts")
             return None
+        
         print("Attempting to generate tts")
-        response = client.audio.speech.create(
+
+        response = client.audio.speech.create( # Generate the audio stream
             model="tts-1",
             voice="shimmer",
             input = f"{prompt}"
         )
+
         print("tts generation successful")
-        audio_stream = BytesIO(response.content)
-        return audio_stream
 
-
+        audio_stream = BytesIO(response.content) # Convert the audio to a stream
+        return audio_stream 
     except Exception as e:
         print(f"an error occured: {e}")
         return None
