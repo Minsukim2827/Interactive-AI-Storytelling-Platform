@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect } from 'react';
 import axios from './../axios'; // Ensure this path is correct based on your project structure
+import { TwitterIcon, TwitterShareButton } from 'react-share';
 
 // Define the initial state for the story generator
 const initialState = {
@@ -82,7 +83,7 @@ function StoryGenerator({ onUpdate, currentPage, onNextPage, parameters }) {
     console.log(prompt)
 
     try { // Call the backend API to generate the story page
-      const response = await axios.post('/generate-story', { 
+      const response = await axios.post('/generate-story', {
         prompt,
         artStyle: parameters.artStyle,
       });
@@ -110,6 +111,17 @@ function StoryGenerator({ onUpdate, currentPage, onNextPage, parameters }) {
   const currentPageKey = Object.keys(state.storyPages)[state.currentPage];
   const currentPageData = state.storyPages[currentPageKey];
 
+
+  const speak = () => {
+    if (window.speechSynthesis) {
+      const utterance = new SpeechSynthesisUtterance(currentPageData.text);
+      utterance.lang = 'EN';  // Set the language as English 
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert('Your browser does not support voice synthesis function');
+    }
+  };
+
   return (
     <div className="flex flex-col items-center space-y-4">
       <h1 className="text-xl font-bold">{currentPageKey}</h1>
@@ -118,6 +130,11 @@ function StoryGenerator({ onUpdate, currentPage, onNextPage, parameters }) {
         {currentPageData.image && ( // Display the generated image
           <img src={currentPageData.image} alt="Story Image" className="max-w-full h-auto" />
         )}
+        { // Display the speak to play button
+          currentPageData.text && (
+            <button onClick={speak}>Speak To Play</button>
+          )
+        }
       </div>
       <input // User input field
         type="text"
@@ -143,7 +160,13 @@ function StoryGenerator({ onUpdate, currentPage, onNextPage, parameters }) {
         </button>
       )}
       {state.loading && <p>Loading...</p>}
-    </div>
+      <h2>share</h2>
+
+      {/* url -> testing Finally, url is the story address */}
+      <TwitterShareButton title='share' url={"https://google.com"} hashtags={["AI"]} related={[]}>
+        <TwitterIcon size={40} round></TwitterIcon>
+      </TwitterShareButton>
+    </div >
   );
 }
 
