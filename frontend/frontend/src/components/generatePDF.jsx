@@ -6,6 +6,7 @@ const generatePDF = (data) => {
 
   // Find the content container
   const content = document.getElementById("pdfContent");
+  console.log("content of Content variable:");
   console.log(content);
   // Create an array to store promises for image loading
   const imagePromises = [];

@@ -25,8 +25,13 @@ const ProfilePage = () => {
           const bookmarksResponse = await axios.get(`/api/user/bookmarks?userId=${user.id}`);
           const bookmarksArray = Object.values(bookmarksResponse.data);
 
+          console.log("User Story Books array Data Response: ");
           console.log(storybooksArray);
+          console.log("Type of storybooksArray object");
+          console.log(typeof(storybooksArray));
+          console.log("User Book Marks array Data Response: ");
           console.log(bookmarksArray);
+
           setStorybooks(storybooksArray);
           setBookmarks(bookmarksArray);
         } catch (error) {
