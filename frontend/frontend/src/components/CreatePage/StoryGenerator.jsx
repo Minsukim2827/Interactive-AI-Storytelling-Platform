@@ -58,7 +58,7 @@ function reducer(state, action) {
 }
 
 // StoryGenerator component to generate story pages
-function StoryGenerator({ onUpdate, currentPage, onNextPage }) {
+function StoryGenerator({ onUpdate, currentPage, onNextPage, parameters }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
@@ -78,9 +78,14 @@ function StoryGenerator({ onUpdate, currentPage, onNextPage }) {
     dispatch({ type: 'SET_LOADING', loading: true });
     const pageKeys = Object.keys(state.storyPages);
     const currentPageKey = pageKeys[state.currentPage];
-    const prompt = `Generate content for: ${currentPageKey} with input: ${state.userInput}`;
+    const prompt = `Generate content for: ${currentPageKey} with with genre: ${parameters.genre}, and input: ${state.userInput}`;
+    console.log(prompt)
+
     try { // Call the backend API to generate the story page
-      const response = await axios.post('/generate-story', { prompt });
+      const response = await axios.post('/generate-story', { 
+        prompt,
+        artStyle: parameters.artStyle,
+      });
       dispatch({
         type: 'SET_PAGE_CONTENT',
         pageKey: currentPageKey,

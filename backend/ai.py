@@ -10,13 +10,12 @@ load_dotenv()
 client = OpenAI(api_key= os.getenv("OPENAI_KEY"))
 
 # Return generated image and text 
-def generate_story(data):
-    prompt = data['prompt']
+def generate_story(prompt, art_style):
     if not prompt:
         return {'error': 'Prompt is required'}, 400
     try:
         text_result = generate_text(prompt)
-        image_result = generate_image(text_result)
+        image_result = generate_image(text_result, art_style)
         return {'text': text_result, 'image': image_result}
     except Exception as e:
         return {'error': str(e)}, 500
@@ -37,7 +36,7 @@ def generate_text(prompt):
         return None
 
 # Generate an image based on the text
-def generate_image(prompt):
+def generate_image(prompt, art_style):
     try:
         if prompt is None:
             print("Failed to generate text")
@@ -45,7 +44,7 @@ def generate_image(prompt):
             
         response = client.images.generate(
             model="dall-e-2",
-            prompt=f"cartoony, friendly {prompt}",
+            prompt=f"{art_style}, friendly {prompt}",
             size="256x256",
             quality="standard",
             n=1,

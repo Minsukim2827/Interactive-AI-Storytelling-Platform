@@ -57,7 +57,14 @@ def users_route():
 @app.route('/generate-story', methods=['POST'])
 def generate_ai():
     data = request.get_json()
-    story = generate_story(data)
+    prompt = data['prompt']
+    art_style = data['artStyle']
+    if not prompt:
+        return jsonify({'error': 'Prompt is required'}), 400
+    
+    if not art_style:
+        return jsonify({'error': 'Art style is required'}), 400
+    story = generate_story(prompt, art_style)
     return jsonify(story)
 
 # Add a new route to register a user

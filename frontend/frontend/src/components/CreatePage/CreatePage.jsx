@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 function CreatePage() {
   const { user } = useAuth();
   const [showSetupPage, setShowSetupPage] = useState(true);
+  const [parameters, setParameters] = useState({ genre: '', artStyle: '', numPages: '' });
   const [pages, setPages] = useState([]);
   const [title, setTitle] = useState('');
   const [currentFormIndex, setCurrentFormIndex] = useState(0);
@@ -19,7 +20,9 @@ function CreatePage() {
   const navigate = useNavigate();
 
   // Function to handle the parameters submitted by the user
-  const handleSetupSubmit = () => {
+  const handleSetupSubmit = (genre, artStyle, numPages) => {
+    setParameters({ genre, artStyle, numPages });
+    console.log("Parameters submitted:", genre, artStyle, numPages);
     setShowSetupPage(false); 
   };
 
@@ -111,7 +114,7 @@ function CreatePage() {
           <div className="w-11/12 max-w-screen-lg flex flex-col items-center">
             <Navigation totalPages={maxViewedPageIndex + 1} currentFormIndex={currentFormIndex} /> {/* Display navigation */}
             <PageDisplay pages={pages} navigateToForm={navigateToForm} /> {/* Display the pages */}
-            <StoryGenerator key={currentFormIndex} onUpdate={handleUpdate} currentPage={pages[currentFormIndex]} onNextPage={onNextPage} /> {/* Generate the story */}
+            <StoryGenerator key={currentFormIndex} onUpdate={handleUpdate} currentPage={pages[currentFormIndex]} onNextPage={onNextPage} parameters={parameters} /> {/* Generate the story */}
             {currentFormIndex === 5 && <SaveStory title={title} setTitle={setTitle} onSave={handleSaveStory} />} {/* Save the story */}
             {saveStatus && (
               // Display the save status message
