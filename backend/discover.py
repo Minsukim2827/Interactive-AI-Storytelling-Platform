@@ -25,7 +25,7 @@ def generate_story_book_list():
         cur = db.cursor()
         
         print("Attempting to query")
-        query = "SELECT u.username, s.storybook_id, s.storybook_title, s.coverimage, d.likes, d.dislikes, d.viewership FROM public.storybooks s JOIN public.users u ON s.user_id = u.id JOIN public.storybook_data d ON s.storybook_id = d.storybook_id"
+        query = "SELECT u.username, s.storybook_id, s.storybook_title, s.coverimage, d.likes, d.dislikes, d.viewership FROM public.storybooks s JOIN public.users u ON s.user_id = u.id JOIN public.storybook_data d ON s.storybook_id = d.storybook_id WHERE s.privacy = false;"
       
         cur.execute(query)
         rows = cur.fetchall()
@@ -45,6 +45,44 @@ def generate_story_book_list():
         print("Successfully queried the database for storybooks")
         print(storybooks)
         return storybooks
+    finally:
+        if cur:
+            cur.close()
+        if db:
+            db.close()
+
+# Update likes for a storybook
+def update_likes(storybook_id):
+    db = None
+    try:
+        db = get_db_connection()
+        cur = db.cursor()
+        query = "UPDATE public.storybook_data SET likes = likes + 1 WHERE storybook_id = %s RETURNING likes;"
+        cur.execute(query, (storybook_id,))
+        db.commit()
+        updated_likes = cur.fetchone()[0]
+        return {"success": True, "likes": updated_likes}
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        if cur:
+            cur.close()
+        if db:
+            db.close()
+
+# Update dislikes for a storybook
+def update_dislikes(storybook_id):
+    db = None
+    try:
+        db = get_db_connection()
+        cur = db.cursor()
+        query = "UPDATE public.storybook_data SET dislikes = dislikes + 1 WHERE storybook_id = %s RETURNING dislikes;"
+        cur.execute(query, (storybook_id,))
+        db.commit()
+        updated_dislikes = cur.fetchone()[0]
+        return {"success": True, "dislikes": updated_dislikes}
+    except Exception as e:
+        return {"error": str(e)}
     finally:
         if cur:
             cur.close()

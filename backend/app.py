@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 from users import get_users
 from login import register, login 
-from discover import generate_story_book_list
+from discover import generate_story_book_list, update_likes, update_dislikes
 from profilePage import get_user_storybooks
 from ai import generate_story, tts_generate
 from saveStory import save_story 
@@ -125,12 +125,6 @@ def save_story_route():
     
     return jsonify(result), 200
 
-if __name__ == '__main__':
-    app.run(port=5000)
-
-if __name__ == '__main__':
-    app.run(port=5000)
-
 # Save user bookmarks
 @app.route('/api/user/save-bookmarks', methods=['POST'])
 def save_bookmark():
@@ -167,3 +161,30 @@ def tts_ai():
         )
     except Exception as e: # Catch any exceptions
         return {'error': str(e)}, 500
+
+# Like a storybook
+@app.route('/api/storybook/like', methods=['POST'])
+def like_storybook():
+    storybook_id = request.json.get('storybookId')
+    if not storybook_id:
+        return jsonify({"error": "Missing storybook ID"}), 400
+    result = update_likes(storybook_id)
+    if "error" in result:
+        return jsonify(result), 500
+    return jsonify(result), 200
+
+# Dislike a storybook
+@app.route('/api/storybook/dislike', methods=['POST'])
+def dislike_storybook():
+    storybook_id = request.json.get('storybookId')
+    if not storybook_id:
+        return jsonify({"error": "Missing storybook ID"}), 400
+    result = update_dislikes(storybook_id)
+    if "error" in result:
+        return jsonify(result), 500
+    return jsonify(result), 200
+
+
+
+if __name__ == '__main__':
+    app.run(port=5000)
