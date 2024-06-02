@@ -3,10 +3,24 @@ import axios from "./../axios"; // Ensure the path is correct
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "./../AuthProvider"; // Import useAuth to access user context
+import StorybookModal from "../Modals";
 
 const DiscoverPage = () => {
   const [storybooks, setStorybooks] = useState([]);
+  const [selectedStorybook, setSelectedStorybook] = useState(null); //storybook modal for disc page
   const { user } = useAuth();
+
+  const closeStorybookModal = () => {
+    setSelectedStorybook(null);
+  };
+
+  const openStorybookModal = (storybook) => {
+    
+    console.log("discoverypage storybook data:");
+    console.log(storybook);
+
+    setSelectedStorybook(storybook);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -100,6 +114,18 @@ const DiscoverPage = () => {
               <p className="text-gray-400 mt-1 font-bold">
                 By: {storybook.username}
               </p>
+
+              <button className="text-white" onClick={() => openStorybookModal(storybook)}>
+                Open Modal
+            </button>
+
+              {selectedStorybook && (
+                <StorybookModal
+                  storybook={selectedStorybook}
+                  onClose={closeStorybookModal}
+                />
+              )}
+
               <div className="mt-4">
                 <span className="text-white dark:text-gray-800 font-medium">
                   Viewership:

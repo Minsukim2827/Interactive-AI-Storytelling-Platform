@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const StoryDisplay = ({ storybook, openStorybookModal }) => (
@@ -24,7 +23,7 @@ const StoryDisplay = ({ storybook, openStorybookModal }) => (
         </div>
         <div className="flex items-center">
             <div className="text-sm text-white">
-                <div className="leading-none">
+                <div className="leading-none"> 
                     Viewership: {storybook.viewership}
                 </div>
                 <div className="flex mt-2 text-white">

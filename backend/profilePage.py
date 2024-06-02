@@ -23,7 +23,7 @@ def get_user_storybooks(user_id):
         db = get_db_connection()
         cur = db.cursor()
 
-        print("Attempting to query user's storybooks")
+        print("Attempting to query user's storybooks for ProfilePage")
         # Adjust this query to include the additional fields from storybook_data table
         query = """
         SELECT u.username, s.storybook_id, s.storybook_title, s.coverimage,
