@@ -49,13 +49,19 @@ const AccountSettings = () => {
 
   const handleSave = async () => {
     try {
-      await axios.post("/api/user/update-email", {
-        user_id: user.id,
-        new_email: userDetails.email,
-      });
+      await Promise.all([
+        axios.post("/api/user/update-email", {
+          user_id: user.id,
+          new_email: userDetails.email,
+        }),
+        axios.post("/api/user/update-username", {
+          user_id: user.id,
+          new_username: userDetails.username,
+        }),
+      ]);
       initializeEditableFields(userDetails); // Reset editableFields after saving
     } catch (error) {
-      console.error("Error updating email: ", error);
+      console.error("Error updating email/username: ", error);
     }
   };
 
