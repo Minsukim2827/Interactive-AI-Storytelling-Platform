@@ -1,35 +1,40 @@
-import React, { useState, useEffect, useContext } from 'react';
-import StoryGenerator from './StoryGenerator';
-import { useAuth } from './../AuthProvider';
-import PageDisplay from './PageDisplay';
-import Navigation from './Navigation';
-import SaveStory from './SaveStory';
-import StorySetup from './StorySetup';
-import axios from './../axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from "react";
+import StoryGenerator from "./StoryGenerator";
+import { useAuth } from "./../AuthProvider";
+import PageDisplay from "./PageDisplay";
+import Navigation from "./Navigation";
+import SaveStory from "./SaveStory";
+import StorySetup from "./StorySetup";
+import axios from "./../axios";
+import { useNavigate } from "react-router-dom";
 
 function CreatePage() {
   const { user } = useAuth();
   const [showSetupPage, setShowSetupPage] = useState(true);
-  const [parameters, setParameters] = useState({ genre: '', artStyle: '', numPages: '' });
+  const [parameters, setParameters] = useState({
+    genre: "",
+    artStyle: "",
+    numPages: "",
+    privacy: "false",
+  });
   const [pages, setPages] = useState([]);
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [currentFormIndex, setCurrentFormIndex] = useState(0);
   const [maxViewedPageIndex, setMaxViewedPageIndex] = useState(0);
   const [saveStatus, setSaveStatus] = useState(null);
   const navigate = useNavigate();
 
   // Function to handle the parameters submitted by the user
-  const handleSetupSubmit = (genre, artStyle, numPages) => {
-    setParameters({ genre, artStyle, numPages });
-    console.log("Parameters submitted:", genre, artStyle, numPages);
-    setShowSetupPage(false); 
+  const handleSetupSubmit = (genre, artStyle, numPages, privacy) => {
+    setParameters({ genre, artStyle, numPages, privacy });
+    console.log("Parameters submitted:", genre, artStyle, numPages, privacy);
+    setShowSetupPage(false);
   };
 
   // Function to update the pages array
   const handleUpdate = (pageKey, text, image) => {
-    setPages(oldPages => {
-      const pageIndex = oldPages.findIndex(page => page.key === pageKey);
+    setPages((oldPages) => {
+      const pageIndex = oldPages.findIndex((page) => page.key === pageKey);
       if (pageIndex !== -1) {
         // Update existing page
         const updatedPages = [...oldPages];
@@ -49,27 +54,40 @@ function CreatePage() {
         title: title,
         pages: pages,
         userId: user.id,
+        genre: parameters.genre,
+        artStyle: parameters.artStyle,
+        privacy: parameters.privacy,
       };
       // Send the story data to the backend
       console.log("attempting to send to backend");
-      axios.post('/api/user/save-story', storyData)
-        .then(response => {
+      console.log(storyData);
+      axios
+        .post("/api/user/save-story", storyData)
+        .then((response) => {
           console.log("Story saved successfully:", response.data);
-          setSaveStatus({ type: 'success', message: 'Story saved successfully! Navigationg to Home in 1.5s' });
+          setSaveStatus({
+            type: "success",
+            message: "Story saved successfully! Navigationg to Home in 1.5s",
+          });
           setTimeout(() => {
-            navigate('/');
+            navigate("/");
           }, 1500);
-
         })
-        .catch(error => {
+        .catch((error) => {
           // Error saving story message
           console.error("Error saving story:", error);
-          setSaveStatus({ type: 'error', message: 'Failed to save story. Please try again.' });
+          setSaveStatus({
+            type: "error",
+            message: "Failed to save story. Please try again.",
+          });
         });
     } else {
       // User not authenticated
       console.log("User not authenticated");
-      setSaveStatus({ type: 'error', message: 'You must be logged in to save a story.' });
+      setSaveStatus({
+        type: "error",
+        message: "You must be logged in to save a story.",
+      });
     }
   };
 
@@ -109,16 +127,41 @@ function CreatePage() {
     <div className="w-full flex justify-center">
       {user ? (
         showSetupPage ? (
-          <StorySetup onSubmit={handleSetupSubmit} /> 
+          <StorySetup onSubmit={handleSetupSubmit} />
         ) : (
           <div className="w-11/12 max-w-screen-lg flex flex-col items-center">
-            <Navigation totalPages={maxViewedPageIndex + 1} currentFormIndex={currentFormIndex} /> {/* Display navigation */}
-            <PageDisplay pages={pages} navigateToForm={navigateToForm} /> {/* Display the pages */}
-            <StoryGenerator key={currentFormIndex} onUpdate={handleUpdate} currentPage={pages[currentFormIndex]} onNextPage={onNextPage} parameters={parameters} /> {/* Generate the story */}
-            {currentFormIndex === 5 && <SaveStory title={title} setTitle={setTitle} onSave={handleSaveStory} />} {/* Save the story */}
+            <Navigation
+              totalPages={maxViewedPageIndex + 1}
+              currentFormIndex={currentFormIndex}
+            />{" "}
+            {/* Display navigation */}
+            <PageDisplay pages={pages} navigateToForm={navigateToForm} />{" "}
+            {/* Display the pages */}
+            <StoryGenerator
+              key={currentFormIndex}
+              onUpdate={handleUpdate}
+              currentPage={pages[currentFormIndex]}
+              onNextPage={onNextPage}
+              parameters={parameters}
+            />{" "}
+            {/* Generate the story */}
+            {currentFormIndex === 5 && (
+              <SaveStory
+                title={title}
+                setTitle={setTitle}
+                onSave={handleSaveStory}
+              />
+            )}{" "}
+            {/* Save the story */}
             {saveStatus && (
               // Display the save status message
-              <div className={`mt-4 text-center p-2 ${saveStatus.type === 'success' ? 'text-green-700' : 'text-red-700'}`}>
+              <div
+                className={`mt-4 text-center p-2 ${
+                  saveStatus.type === "success"
+                    ? "text-green-700"
+                    : "text-red-700"
+                }`}
+              >
                 {saveStatus.message}
               </div>
             )}

@@ -9,6 +9,23 @@ load_dotenv()
 
 client = OpenAI(api_key= os.getenv("OPENAI_KEY"))
 
+
+def upload_to_imgur(image_url):
+    headers = {
+        "Authorization": f"Client-ID {os.getenv('IMGUR_CLIENT_ID')}"
+    }
+    data = {
+        'image': image_url,
+        'type': 'URL'
+    }
+    response = requests.post("https://api.imgur.com/3/image", headers=headers, data=data)
+    if response.status_code == 200:
+        print(response.json())
+        return response.json()['data']['link']
+    else:
+        return None
+
+
 # Return generated image and text 
 def generate_story(prompt, art_style):
     if not prompt:
@@ -50,7 +67,13 @@ def generate_image(prompt, art_style):
             n=1,
         )
         print("image generation successful")
-        return response.data[0].url
+        image_url = response.data[0].url
+        # Upload the image to Imgur
+        imgur_url = upload_to_imgur(image_url)
+        if imgur_url is None:
+            print("Failed to upload to Imgur")
+            return None
+        return imgur_url
     except Exception as e:
         print(f"an error occured: {e}")
         return None
