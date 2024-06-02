@@ -24,10 +24,10 @@ def save_story(story_data):
     print(story_data)
     print('attempting to put into database')
     try:
-        # Insert into storybooks table
+        # Insert into storybooks table with new fields
         cursor.execute("""
-            INSERT INTO public.storybooks (user_id, storybook_title, coverimage, image1, text1, image2, text2, image3, text3, image4, text4, image5, text5)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO public.storybooks (user_id, storybook_title, coverimage, image1, text1, image2, text2, image3, text3, image4, text4, image5, text5, privacy, genre, artstyle)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING storybook_id;
         """, (
             story_data['userId'],
@@ -38,6 +38,9 @@ def save_story(story_data):
             story_data['pages'][3]['image'], story_data['pages'][3]['text'],
             story_data['pages'][4]['image'], story_data['pages'][4]['text'],
             story_data['pages'][5]['image'], story_data['pages'][5]['text'],
+            story_data.get('privacy', False),  # Default to False if not provided
+            story_data.get('genre', 'Unknown'),  # Default to 'Unknown' if not provided
+            story_data.get('artStyle', 'Unknown')  # Default to 'Unknown' if not provided
         ))
         
         storybook_id = cursor.fetchone()[0]
