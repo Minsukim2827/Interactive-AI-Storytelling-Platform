@@ -10,9 +10,11 @@ from profilePage import get_user_storybooks
 from ai import generate_story, tts_generate
 from saveStory import save_story 
 from bookmarks import save_bookmarks, get_user_bookmarks
+from accountSettings import get_user_details, update_username, update_email
 
 app = Flask(__name__)
-CORS(app)
+#CORS(app)
+CORS(app, origins='http://localhost:5173')  # Replace with your frontend origin
 
 # Load environment variables
 load_dotenv()
@@ -185,6 +187,52 @@ def dislike_storybook():
     return jsonify(result), 200
 
 
+# Route to fetch user details by user_id
+@app.route('/api/user/details', methods=['GET'])
+def get_user_details_route():
+    user_id = request.args.get('userId')
+    if user_id is None:
+        return jsonify({"error": "Missing user ID"}), 400
+    
+    try:
+        user_details = get_user_details(user_id)
+        if user_details:
+            return jsonify({
+                "id": user_details[0],
+                "username": user_details[1],
+                "email": user_details[2]
+            })
+        else:
+            return jsonify({"error": "User not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(port=5000)
+
+
+@app.route('/api/user/update-username', methods=['POST'])
+def update_user_username():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    new_username = data.get('new_username')
+    if not user_id or not new_username:
+        return jsonify({"error": "User ID and new username are required"}), 400
+    try:
+        update_username(user_id, new_username)  # Call the update_username function
+        return jsonify({"success": True, "message": "Username updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/api/user/update-email', methods=['POST'])
+def update_user_email():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    new_email = data.get('new_email')
+    if not user_id or not new_email:
+        return jsonify({"error": "User ID and new email are required"}), 400
+    try:
+        update_email(user_id, new_email)  # Call the update_email function
+        return jsonify({"success": True, "message": "Email updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

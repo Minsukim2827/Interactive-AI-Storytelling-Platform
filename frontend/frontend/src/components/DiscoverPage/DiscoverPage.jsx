@@ -16,7 +16,6 @@ const DiscoverPage = () => {
   };
 
   const openStorybookModal = (storybook) => {
-    
     console.log("discoverypage storybook data:");
     console.log(storybook);
 
@@ -163,9 +162,12 @@ const DiscoverPage = () => {
                 By: {storybook.username}
               </p>
 
-              <button className="text-white" onClick={() => openStorybookModal(storybook)}>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm"
+                onClick={() => openStorybookModal(storybook)}
+              >
                 Open Modal
-            </button>
+              </button>
 
               {selectedStorybook && (
                 <StorybookModal
