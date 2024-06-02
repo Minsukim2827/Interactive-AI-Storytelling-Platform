@@ -7,6 +7,7 @@ import { useAuth } from "./../AuthProvider"; // Import useAuth to access user co
 const DiscoverPage = () => {
   const [storybooks, setStorybooks] = useState([]);
   const { user } = useAuth();
+  const [sortType, setSortType] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,11 +78,58 @@ const DiscoverPage = () => {
     }
   };
 
+  const sortStorybooks = () => {
+    let sortedBooks = [...storybooks];
+    switch (sortType) {
+      case "views":
+        sortedBooks.sort((a, b) => b.viewership - a.viewership);
+        break;
+      case "upvotes":
+        sortedBooks.sort(
+          (a, b) =>
+            b.likes / (b.likes + b.dislikes) - a.likes / (a.likes + a.dislikes)
+        );
+        break;
+      case "alphabetical-asc":
+        sortedBooks.sort((a, b) =>
+          a.storybook_title.localeCompare(b.storybook_title)
+        );
+        break;
+      case "alphabetical-desc":
+        sortedBooks.sort((a, b) =>
+          b.storybook_title.localeCompare(a.storybook_title)
+        );
+        break;
+      default:
+        break;
+    }
+    setStorybooks(sortedBooks);
+  };
+
   return (
     <div className="min-h-screen max-w-screen pt-24">
       <h1 className="text-center text-4xl font-bold dark:text-white my-8">
         Discover Storybooks
       </h1>
+      <div>
+        <select
+          value={sortType}
+          onChange={(e) => setSortType(e.target.value)}
+          className="m-4 p-2 rounded dark:text-black"
+        >
+          <option value="">Select Sort Type</option>
+          <option value="views">Sort by Views</option>
+          <option value="upvotes">Sort by Upvotes</option>
+          <option value="alphabetical-asc">Alphabetical Ascending</option>
+          <option value="alphabetical-desc">Alphabetical Descending</option>
+        </select>
+        <button
+          onClick={sortStorybooks}
+          className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
+        >
+          Sort
+        </button>
+      </div>
       <div className="text-black grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 px-4 md:px-20">
         {storybooks.map((storybook) => (
           <div
