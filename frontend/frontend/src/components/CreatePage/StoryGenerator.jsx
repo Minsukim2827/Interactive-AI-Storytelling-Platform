@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 import axios from "./../axios"; // Ensure this path is correct based on your project structure
-import { TwitterIcon, TwitterShareButton } from "react-share";
+import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton, XIcon } from "react-share";
 
 // Define the initial state for the story generator
 const initialState = {
@@ -178,14 +178,23 @@ function StoryGenerator({ onUpdate, currentPage, onNextPage, parameters }) {
       <h2>share</h2>
 
       {/* url -> testing Finally, url is the story address */}
+      <EmailShareButton subject="My Story" body={"https://googole.com"}>
+        <EmailIcon size={40} round></EmailIcon>
+      </EmailShareButton>
+
       <TwitterShareButton
         title="share"
         url={"https://google.com"}
         hashtags={["AI"]}
         related={[]}
       >
-        <TwitterIcon size={40} round></TwitterIcon>
+        <XIcon size={40} round></XIcon>
       </TwitterShareButton>
+
+
+      <FacebookShareButton url={"https://google.com"}>
+        <FacebookIcon size={40} round></FacebookIcon>
+      </FacebookShareButton>
     </div>
   );
 }
