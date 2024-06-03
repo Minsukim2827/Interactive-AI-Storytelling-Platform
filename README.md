@@ -34,7 +34,66 @@
 
 ## WorkFlow setup
 
-Here is a step by step instruction guide to setup this project and run both the backend and frontend to get everything working.
+Here is a step by step instruction guide on how to run our project as a non-dev team member
+
+#### Step 1. Clone the repo
+
+```
+git clone https://github.com/Minsukim2827/Interactive-AI-Storytelling-Platform.git
+```
+
+#### Step 2. Navigate inside the repository
+
+```
+cd Interactive-AI-Storytelling-Platform
+```
+
+### Step 3. Update Libraries
+
+From the root directory, Navigate to your frontend folder and install the necessary frontend libraries and tools
+
+```
+cd frontend/frontend
+npm install
+```
+
+From the root directory, Navigate to your backend folder and install the necessary backend libraries and tools
+
+```
+cd backend
+pip install Flask Flask-CORS psycopg2-binary python-dotenv transformers requests openai
+```
+
+### Step 4. Create a .env file for the backend
+
+To run this project, you need to set up the necessary environment variables. Create a `.env` file in the `backend` directory with the following structure:
+
+```
+DB_HOST=<your_database_host>
+DB_NAME=<your_database_name>
+DB_USER=<your_database_username>
+DB_PASSWORD=<your_database_password>
+OPENAI_KEY="<your_api_key>"
+IMGUR_CLIENT_ID="<yourimgurclientidhere>"
+```
+
+### Step 5. Run the Backend and Frontend
+
+From the root directory, Navigate to your frontend folder and run this command:
+
+```
+cd frontend/frontend
+npm run dev
+```
+
+From the root directory, Navigate to your backend folder and run this command:
+
+```
+cd backend
+flask run
+```
+
+Here is a step by step instruction guide for our development teams project workflow and run both the backend and frontend to get everything working.
 
 #### Step 1. Pull From Main
 
@@ -64,8 +123,7 @@ From the root directory, Navigate to your backend folder and install the necessa
 
 ```
 cd backend
-pip install Flask Flask-CORS psycopg2-binary python-dotenv transformers requests tensorflow
-pip install openai
+pip install Flask Flask-CORS psycopg2-binary python-dotenv transformers requests openai
 ```
 
 ### Step 3. Create a .env file for the backend
@@ -78,6 +136,7 @@ DB_NAME=<your_database_name>
 DB_USER=<your_database_username>
 DB_PASSWORD=<your_database_password>
 OPENAI_KEY="<your_api_key>"
+IMGUR_CLIENT_ID="<yourimgurclientidhere>"
 ```
 
 ### Step 4. Run the Backend and Frontend
