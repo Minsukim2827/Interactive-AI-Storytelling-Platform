@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "./../AuthProvider"; // Import useAuth to access user context
 import StorybookModal from "../Modals";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const DiscoverPage = () => {
   const [storybooks, setStorybooks] = useState([]);
@@ -81,15 +83,21 @@ const DiscoverPage = () => {
     if (user) {
       const bookmarkData = { userId: user.id, storybookId };
       axios
-        .post("/api/user/save-bookmarks", bookmarkData)
-        .then((response) =>
-          console.log("Story bookmarked successfully:", response.data)
-        )
-        .catch((error) => console.error("Error bookmarking story:", error));
+      .post("/api/user/save-bookmarks", bookmarkData)
+      .then((response) => {
+         const message = response.data.message;
+         toast.success(message); 
+         
+       })
+      .catch((error) => {
+         console.error("Error saving bookmark:", error);
+         toast.error("Failed to save bookmark");
+       });
     } else {
       console.log("User not authenticated");
     }
   };
+
 
   const sortStorybooks = () => {
     let sortedBooks = [...storybooks];
@@ -230,6 +238,8 @@ const DiscoverPage = () => {
           </div>
         ))}
       </div>
+      <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+
     </div>
   );
 };
