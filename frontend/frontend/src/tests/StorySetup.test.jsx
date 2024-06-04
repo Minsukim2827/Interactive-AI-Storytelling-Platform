@@ -15,5 +15,15 @@ describe('StorySetup Component', () => {
     fireEvent.click(artButton);
     expect(artButton).toHaveClass('bg-blue-500 text-white');
   });
+  it('toggles privacy setting when checkbox is clicked', () => {
+    const { getByLabelText } = render(<StorySetup />);
+    const checkbox = getByLabelText(/make story private/i);
+    expect(checkbox.checked).toEqual(false); 
 
+    fireEvent.click(checkbox);
+    expect(checkbox.checked).toEqual(true); 
+
+    fireEvent.click(checkbox);
+    expect(checkbox.checked).toEqual(false);
+  });
 });

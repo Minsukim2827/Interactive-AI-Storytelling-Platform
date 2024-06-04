@@ -3,11 +3,10 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import StoryGenerator from '../components/CreatePage/StoryGenerator';
 import axios from '../components/axios';
 
-vi.mock('../components/axios'); // Use `vi` instead of `jest`
+vi.mock('../components/axios');
 
 describe('StoryGenerator', () => {
   beforeEach(() => {
-    // Clear all instances and calls to constructor and all methods:
     axios.post.mockClear();
   });
 
@@ -16,18 +15,21 @@ describe('StoryGenerator', () => {
       data: { text: 'Generated story text', image: 'path/to/image.jpg' }
     });
 
-    render(<StoryGenerator />);
+    // Include parameters with genre and artStyle
+    const parameters = { genre: 'Adventure', artStyle: 'Cartoon' };
+
+    render(<StoryGenerator parameters={parameters} />);
     const input = screen.getByPlaceholderText(/Enter your input for the next page/i);
     fireEvent.change(input, { target: { value: 'New user input' } });
     fireEvent.click(screen.getByText(/Generate Page/i));
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith('/generate-story', {
-        prompt: expect.any(String)
+        prompt: expect.any(String),
+        artStyle: 'Cartoon',
       });
       expect(screen.getByText('Generated story text')).toBeInTheDocument();
       expect(screen.getByAltText('Story Image')).toHaveAttribute('src', 'path/to/image.jpg');
     });
   });
-
 });

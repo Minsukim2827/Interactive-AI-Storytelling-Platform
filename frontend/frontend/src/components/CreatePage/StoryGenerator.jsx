@@ -175,26 +175,7 @@ function StoryGenerator({ onUpdate, currentPage, onNextPage, parameters }) {
           </button>
         )}
       {state.loading && <p>Loading...</p>}
-      <h2>share</h2>
 
-      {/* url -> testing Finally, url is the story address */}
-      <EmailShareButton subject="My Story" body={"https://googole.com"}>
-        <EmailIcon size={40} round></EmailIcon>
-      </EmailShareButton>
-
-      <TwitterShareButton
-        title="share"
-        url={"https://google.com"}
-        hashtags={["AI"]}
-        related={[]}
-      >
-        <XIcon size={40} round></XIcon>
-      </TwitterShareButton>
-
-
-      <FacebookShareButton url={"https://google.com"}>
-        <FacebookIcon size={40} round></FacebookIcon>
-      </FacebookShareButton>
     </div>
   );
 }
