@@ -7,6 +7,7 @@ import SaveStory from "./SaveStory";
 import StorySetup from "./StorySetup";
 import axios from "./../axios";
 import { useNavigate } from "react-router-dom";
+import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton, XIcon } from "react-share";
 
 function CreatePage() {
   const { user } = useAuth();
@@ -146,11 +147,21 @@ function CreatePage() {
             />{" "}
             {/* Generate the story */}
             {currentFormIndex === 5 && (
-              <SaveStory
-                title={title}
-                setTitle={setTitle}
-                onSave={handleSaveStory}
-              />
+              <>
+                <SaveStory title={title} setTitle={setTitle} onSave={handleSaveStory} />
+                <div className = "flex row items-center gap-3">
+                <h2>Share</h2>
+                <EmailShareButton subject="My Story" body={"https://googole.com"}>
+                  <EmailIcon size={40} round />
+                </EmailShareButton>
+                <TwitterShareButton title="share" url={"https://google.com"} hashtags={["AI"]} related={[]}>
+                  <XIcon size={40} round />
+                </TwitterShareButton>
+                <FacebookShareButton url={"https://google.com"}>
+                  <FacebookIcon size={40} round />
+                </FacebookShareButton>
+                </div>
+              </>
             )}{" "}
             {/* Save the story */}
             {saveStatus && (

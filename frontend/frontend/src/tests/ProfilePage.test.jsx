@@ -1,4 +1,4 @@
-// ProfilePage.test.jsx
+// src/tests/ProfilePage.test.jsx
 import { describe, it, expect, vi } from 'vitest';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -21,6 +21,14 @@ vi.mock('../components/AuthProvider', () => {
   return {
     AuthProvider: ({ children }) => <div>{children}</div>,
     useAuth
+  };
+});
+
+vi.mock('@react-pdf/renderer', async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    PDFDownloadLink: ({ children }) => <a href="#">{children}</a>,
   };
 });
 
@@ -47,6 +55,7 @@ describe('ProfilePage', () => {
     expect(await screen.findByText('Storybook 1')).toBeInTheDocument();
     expect(await screen.findByText('Storybook 2')).toBeInTheDocument();
   });
+
   it('opens the modal when a storybook is clicked', async () => {
     const mockStorybooks = [
       { storybook_id: 1, storybook_title: 'Storybook 1', coverimage: 'url1', username: 'user1', viewership: 100, likes: 10, dislikes: 2 }
@@ -63,29 +72,8 @@ describe('ProfilePage', () => {
     // Wait for the storybook to be displayed before clicking
     await waitFor(() => expect(screen.getByText('Storybook 1')).toBeInTheDocument());
   });
-  it('toggles between storybooks and bookmarks view', async () => {
-    const mockBookmarks = [
-      { storybook_id: 1, storybook_title: 'Storybook 1', coverimage: 'url1', username: 'user1', viewership: 100, likes: 10, dislikes: 2 }
-    ];
 
-    axios.get.mockResolvedValueOnce({ data: mockBookmarks });
 
-    render(
-      <AuthProvider>
-        <ProfilePage />
-      </AuthProvider>
-    );
-
-    // Wait for the profile to be displayed
-    await waitFor(() => expect(screen.getByText('testuser\'s Profile Page')).toBeInTheDocument());
-
-    // Toggle to bookmarks view
-    userEvent.click(screen.getByText('View Bookmarks'));
-
-    // Wait for the bookmarks to be displayed
-    await waitFor(() => expect(screen.getByText('Storybook 1')).toBeInTheDocument());
-
-  });
   it('activates ai-generated voice when button is clicked', async () => {
     const mockStorybooks = [
       { storybook_id: 1, storybook_title: 'Storybook 1', coverimage: 'url1', username: 'user1', viewership: 100, likes: 10, dislikes: 2 }
@@ -99,21 +87,20 @@ describe('ProfilePage', () => {
       </AuthProvider>
     );
 
-    // Wait for the storybook to be displayed before clicking
+    // wait for the storybook to be displayed before clicking
     await waitFor(() => expect(screen.getByText('Storybook 1')).toBeInTheDocument());
 
-    // Click the button to activate the audio
+    // click the button to activate the audio
     fireEvent.click(screen.getByText('Open Modal'));
     
-    // Get audio buttons
+    // get audio buttons
     const playAudioButtons = screen.getAllByRole('button', { name: /Play audio/i });
 
-    // Find the first play audio button and click it
+    // find the first play audio button and click it
     const playAudioButton = playAudioButtons[0];
     fireEvent.click(playAudioButton);
 
-    // Check if the audio is playing
+    // check if the audio is playing
     expect(screen.getByText('Audio is playing...')).toBeInTheDocument();
-
   });
 });

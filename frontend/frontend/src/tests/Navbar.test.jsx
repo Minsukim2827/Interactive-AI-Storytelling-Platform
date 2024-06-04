@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar/Navbar';
 import { AuthProvider } from '../components/AuthProvider';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n/i18n'; 
+import {expect, it, describe} from 'vitest';
 
 const MockNavbar = () => {
   return (

@@ -36,22 +36,22 @@ const PDFPage = ({ data }) => {
   return (
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
-        <Image src={data.coverimage} style={styles.image} />
+        <Image src={data.coverimage} style={styles.image} alt="coverimage" />
         <Text style={styles.text}>{data.storybook_title}</Text>
 
-        <Image src={data.image1} style={styles.image} />
+        <Image src={data.image1} style={styles.image} alt="image1" />
         <Text style={styles.text}>{data.text1}</Text>
 
-        <Image src={data.image2} style={styles.image} />
+        <Image src={data.image2} style={styles.image} alt="image2" />
         <Text style={styles.text}>{data.text2}</Text>
 
-        <Image src={data.image3} style={styles.image} />
+        <Image src={data.image3} style={styles.image} alt="image3" />
         <Text style={styles.text}>{data.text3}</Text>
 
-        <Image src={data.image4} style={styles.image} />
+        <Image src={data.image4} style={styles.image} alt="image4" />
         <Text style={styles.text}>{data.text4}</Text>
 
-        <Image src={data.image5} style={styles.image} />
+        <Image src={data.image5} style={styles.image} alt="image5" />
         <Text style={styles.text}>{data.text5}</Text>
       </View>
     </Page>
